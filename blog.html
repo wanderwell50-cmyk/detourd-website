@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The Detour Log - Road Trip Guides & Hidden Stops | Detourd</title>
+  <meta name="description" content="Road trip guides, hidden stops, local haunts, trail picks, and scenic detours curated by Detourd. Plan a better drive."/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --ink: #1A1F2E; --amber: #F5A623; --sage: #6B8F71;
+      --cream: #F7F3ED; --terra: #C4705A; --mist: #D6DDE8;
+      --white: #FFFFFF; --ink-light: #2E3650;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--cream); color: var(--ink); overflow-x: hidden; }
+
+    /* NAV */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 4rem;
+      background: rgba(26,31,46,0.96); backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(245,166,35,0.15);
+    }
+    .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.55rem; font-weight: 900; color: var(--white); text-decoration: none; }
+    .nav-logo span { color: var(--amber); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(214,221,232,0.7); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--amber); }
+    .nav-cta { background: var(--amber); color: var(--ink); font-family: 'Space Mono', monospace; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.6rem 1.3rem; border-radius: 2px; text-decoration: none; transition: background 0.2s; }
+    .nav-cta:hover { background: #ffc24a; }
+
+    /* BLOG HERO */
+    .blog-hero {
+      background: var(--ink); padding: 5rem 4rem 4rem;
+      position: relative; overflow: hidden;
+    }
+    .blog-hero::before {
+      content: ''; position: absolute; inset: 0;
+      background-image: linear-gradient(rgba(107,143,113,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(107,143,113,0.05) 1px, transparent 1px);
+      background-size: 55px 55px;
+    }
+    .blog-hero-inner { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; }
+    .blog-eyebrow { font-family: 'Space Mono', monospace; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--amber); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.7rem; }
+    .blog-eyebrow::before { content: ''; width: 30px; height: 1px; background: var(--amber); opacity: 0.5; }
+    .blog-hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 5vw, 3.8rem); font-weight: 900; color: var(--white); line-height: 1.1; margin-bottom: 1rem; }
+    .blog-hero h1 em { font-style: italic; color: var(--amber); }
+    .blog-hero p { font-size: 1rem; color: rgba(214,221,232,0.65); max-width: 520px; line-height: 1.75; }
+
+    /* CATEGORY FILTER */
+    .category-bar { background: var(--white); border-bottom: 1px solid var(--mist); padding: 0 4rem; display: flex; gap: 0; overflow-x: auto; }
+    .cat-btn { font-family: 'Space Mono', monospace; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 1rem 1.4rem; border: none; background: none; cursor: pointer; color: #6B7280; border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s; white-space: nowrap; }
+    .cat-btn:hover { color: var(--ink); }
+    .cat-btn.active { color: var(--amber); border-bottom-color: var(--amber); }
+
+    /* FEATURED POST */
+    .featured-section { max-width: 1100px; margin: 3.5rem auto 0; padding: 0 4rem; }
+    .featured-label { font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--sage); margin-bottom: 1.2rem; }
+    .featured-card {
+      background: var(--ink); border-radius: 14px; overflow: hidden;
+      display: grid; grid-template-columns: 1fr 1fr;
+      box-shadow: 0 20px 60px rgba(26,31,46,0.18);
+      text-decoration: none; transition: transform 0.25s;
+    }
+    .featured-card:hover { transform: translateY(-3px); }
+    .featured-visual {
+      background: linear-gradient(135deg, #2E3650 0%, #1A1F2E 50%, #3D2B1F 100%);
+      min-height: 340px; position: relative; display: flex; align-items: flex-end; padding: 2rem;
+    }
+    .featured-visual::before {
+      content: ''; position: absolute; inset: 0;
+      background-image: linear-gradient(rgba(107,143,113,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(107,143,113,0.07) 1px, transparent 1px);
+      background-size: 35px 35px;
+    }
+    .featured-map-art { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+    .featured-badge { position: relative; z-index: 1; background: var(--amber); color: var(--ink); font-family: 'Space Mono', monospace; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.4rem 0.8rem; border-radius: 3px; }
+    .featured-content { padding: 2.8rem; display: flex; flex-direction: column; justify-content: center; }
+    .fc-category { font-family: 'Space Mono', monospace; font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--sage); margin-bottom: 0.8rem; }
+    .fc-title { font-family: 'Playfair Display', serif; font-size: 1.7rem; font-weight: 700; color: var(--white); line-height: 1.25; margin-bottom: 1rem; }
+    .fc-excerpt { font-size: 0.88rem; color: rgba(214,221,232,0.6); line-height: 1.75; margin-bottom: 1.6rem; }
+    .fc-meta { display: flex; align-items: center; gap: 1.2rem; }
+    .fc-read { font-family: 'Space Mono', monospace; font-size: 0.68rem; letter-spacing: 0.08em; color: var(--amber); text-transform: uppercase; }
+    .fc-time { font-size: 0.78rem; color: rgba(214,221,232,0.4); }
+
+    /* POST GRID */
+    .posts-section { max-width: 1100px; margin: 3.5rem auto 5rem; padding: 0 4rem; }
+    .posts-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; }
+    .posts-header h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--ink); }
+    .post-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.8rem; }
+    .post-card { background: var(--white); border-radius: 12px; overflow: hidden; text-decoration: none; border: 1px solid var(--mist); transition: transform 0.2s, box-shadow 0.2s; }
+    .post-card:hover { transform: translateY(-4px); box-shadow: 0 20px 50px rgba(26,31,46,0.1); }
+    .post-visual {
+      height: 180px; position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .post-visual svg { width: 100%; height: 100%; }
+    .post-cat-tag { position: absolute; top: 1rem; left: 1rem; background: rgba(26,31,46,0.85); backdrop-filter: blur(4px); color: var(--amber); font-family: 'Space Mono', monospace; font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.3rem 0.65rem; border-radius: 3px; }
+    .post-body { padding: 1.4rem 1.5rem 1.6rem; }
+    .post-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--ink); line-height: 1.35; margin-bottom: 0.6rem; }
+    .post-excerpt { font-size: 0.82rem; color: #6B7280; line-height: 1.68; margin-bottom: 1rem; }
+    .post-footer { display: flex; align-items: center; justify-content: space-between; }
+    .post-read-time { font-family: 'Space Mono', monospace; font-size: 0.6rem; color: #9CA3AF; letter-spacing: 0.05em; }
+    .post-arrow { font-size: 0.75rem; color: var(--amber); }
+
+    /* NEWSLETTER */
+    .newsletter { background: var(--ink-light); margin: 0 4rem 5rem; border-radius: 14px; padding: 3rem; display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
+    .nl-text h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: var(--white); margin-bottom: 0.4rem; }
+    .nl-text p { font-size: 0.88rem; color: rgba(214,221,232,0.6); }
+    .nl-form { display: flex; gap: 0.6rem; }
+    .nl-input { padding: 0.75rem 1.1rem; border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; background: rgba(255,255,255,0.07); color: var(--white); font-family: 'Inter', sans-serif; font-size: 0.88rem; outline: none; width: 240px; transition: border-color 0.2s; }
+    .nl-input::placeholder { color: rgba(255,255,255,0.3); }
+    .nl-input:focus { border-color: var(--amber); }
+    .nl-btn { background: var(--amber); color: var(--ink); font-family: 'Space Mono', monospace; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.75rem 1.3rem; border-radius: 4px; border: none; cursor: pointer; white-space: nowrap; transition: background 0.2s; }
+    .nl-btn:hover { background: #ffc24a; }
+
+    /* FOOTER */
+    footer { background: var(--ink); padding: 2.5rem 4rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; border-top: 1px solid rgba(255,255,255,0.06); }
+    .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 900; color: var(--white); text-decoration: none; }
+    .footer-logo span { color: var(--amber); }
+    .footer-nav { display: flex; gap: 1.8rem; list-style: none; }
+    .footer-nav a { font-size: 0.8rem; color: rgba(255,255,255,0.4); text-decoration: none; transition: color 0.2s; }
+    .footer-nav a:hover { color: var(--amber); }
+    .footer-copy { font-size: 0.75rem; color: rgba(255,255,255,0.2); }
+
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .blog-hero, .featured-section, .posts-section { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .category-bar { padding: 0 1.5rem; }
+      .featured-card { grid-template-columns: 1fr; }
+      .featured-visual { min-height: 200px; }
+      .post-grid { grid-template-columns: 1fr 1fr; }
+      .newsletter { margin: 0 1.5rem 3rem; }
+    }
+    @media (max-width: 600px) {
+      .post-grid { grid-template-columns: 1fr; }
+      .nl-form { flex-direction: column; }
+      .nl-input { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="/index.html">Detour<span>d</span></a>
+  <ul class="nav-links">
+    <li><a href="/index.html">Home</a></li>
+    <li><a href="/plan.html">Plan a Route</a></li>
+    <li><a href="/blog.html" class="active">The Detour Log</a></li>
+    <li><a href="/partners.html">Affiliates</a></li>
+  </ul>
+  <a class="nav-cta" href="/index.html#early-access">Join Waitlist</a>
+</nav>
+
+<!-- HERO -->
+<div class="blog-hero">
+  <div class="blog-hero-inner">
+    <div class="blog-eyebrow">The Detour Log</div>
+    <h1>Roads worth taking.<br>Stops worth <em>remembering.</em></h1>
+    <p>Route guides, hidden restaurants, trail picks, scenic overlooks, and local haunts - curated for the traveler who wants more than just a destination.</p>
+  </div>
+</div>
+
+<!-- CATEGORY FILTER -->
+<div class="category-bar">
+  <button class="cat-btn active">All</button>
+  <button class="cat-btn">Route Guides</button>
+  <button class="cat-btn">Local Haunts</button>
+  <button class="cat-btn">Trails & Outdoors</button>
+  <button class="cat-btn">Lodging</button>
+  <button class="cat-btn">Wellness</button>
+  <button class="cat-btn">Scenic Stops</button>
+</div>
+
+<!-- FEATURED POST -->
+<div class="featured-section">
+  <div class="featured-label">Featured Guide</div>
+  <a class="featured-card" href="/posts/pacific-coast-highway.html">
+    <div class="featured-visual">
+      <svg viewBox="0 0 500 340" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%">
+        <rect width="500" height="340" fill="#1A1F2E"/>
+        <line x1="0" y1="0" x2="500" y2="340" stroke="rgba(107,143,113,0.07)" stroke-width="1"/>
+        <path d="M 50 300 Q 120 240 180 190 Q 240 140 300 130 Q 360 120 420 80 Q 460 55 490 30" fill="none" stroke="rgba(245,166,35,0.4)" stroke-width="2.5" stroke-dasharray="8 5"/>
+        <circle cx="180" cy="190" r="6" fill="#F5A623" opacity="0.9"/>
+        <circle cx="300" cy="130" r="6" fill="#C4705A" opacity="0.9"/>
+        <circle cx="420" cy="80" r="6" fill="#6B8F71" opacity="0.9"/>
+        <text x="250" y="280" fill="rgba(214,221,232,0.08)" font-family="serif" font-size="72" font-weight="900" text-anchor="middle">PCH</text>
+      </svg>
+      <div class="featured-badge">Route Guide</div>
+    </div>
+    <div class="featured-content">
+      <div class="fc-category">Route Guide - California</div>
+      <div class="fc-title">17 Stops Most Drivers Miss on the Pacific Coast Highway</div>
+      <div class="fc-excerpt">Everyone drives PCH. Almost nobody stops at the right places. Here are the hidden coves, cliffside diners, trail access points, and roadside gems that make the difference between a drive and an adventure.</div>
+      <div class="fc-meta">
+        <span class="fc-read">Read Guide →</span>
+        <span class="fc-time">9 min read</span>
+      </div>
+    </div>
+  </a>
+</div>
+
+<!-- POST GRID -->
+<div class="posts-section">
+  <div class="posts-header">
+    <h2>Latest from the Log</h2>
+  </div>
+  <div class="post-grid">
+
+    <!-- Post 1 -->
+    <a class="post-card" href="/posts/route-66-hidden-stops.html">
+      <div class="post-visual" style="background:linear-gradient(135deg,#2E1F1A,#1A1F2E)">
+        <svg viewBox="0 0 360 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+          <rect width="360" height="180" fill="transparent"/>
+          <path d="M 20 140 Q 90 100 180 90 Q 270 80 340 50" fill="none" stroke="rgba(245,166,35,0.35)" stroke-width="2" stroke-dasharray="7 4"/>
+          <circle cx="90" cy="105" r="5" fill="#F5A623" opacity="0.8"/>
+          <circle cx="180" cy="90" r="5" fill="#C4705A" opacity="0.8"/>
+          <circle cx="270" cy="70" r="5" fill="#6B8F71" opacity="0.8"/>
+          <text x="180" y="160" fill="rgba(245,166,35,0.07)" font-family="serif" font-size="52" font-weight="900" text-anchor="middle">66</text>
+        </svg>
+        <div class="post-cat-tag">Route Guide</div>
+      </div>
+      <div class="post-body">
+        <div class="post-title">The 12 Best Hidden Stops on Route 66 You've Never Heard Of</div>
+        <div class="post-excerpt">From a neon-lit diner that hasn't changed since 1957 to a desert canyon most GPS apps route around entirely.</div>
+        <div class="post-footer">
+          <span class="post-read-time">7 min read</span>
+          <span class="post-arrow">→</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Post 2 -->
+    <a class="post-card" href="/posts/best-roadside-restaurants.html">
+      <div class="post-visual" style="background:linear-gradient(135deg,#1F2E1A,#1A1F2E)">
+        <svg viewBox="0 0 360 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+          <rect width="360" height="180" fill="transparent"/>
+          <circle cx="80" cy="90" r="30" fill="none" stroke="rgba(245,166,35,0.15)" stroke-width="1"/>
+          <circle cx="180" cy="90" r="40" fill="none" stroke="rgba(107,143,113,0.15)" stroke-width="1"/>
+          <circle cx="280" cy="90" r="25" fill="none" stroke="rgba(196,112,90,0.15)" stroke-width="1"/>
+          <text x="80" y="96" fill="rgba(245,166,35,0.5)" font-size="28" text-anchor="middle">🍜</text>
+          <text x="180" y="98" fill="rgba(107,143,113,0.5)" font-size="36" text-anchor="middle">🍔</text>
+          <text x="280" y="95" fill="rgba(196,112,90,0.5)" font-size="24" text-anchor="middle">🥧</text>
+        </svg>
+        <div class="post-cat-tag">Local Haunts</div>
+      </div>
+      <div class="post-body">
+        <div class="post-title">America's Best Roadside Restaurants That Locals Actually Eat At</div>
+        <div class="post-excerpt">Skip the chains. These 15 independently owned spots are worth the detour and the extra 20 minutes.</div>
+        <div class="post-footer">
+          <span class="post-read-time">6 min read</span>
+          <span class="post-arrow">→</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Post 3 -->
+    <a class="post-card" href="/posts/hikes-near-highways.html">
+      <div class="post-visual" style="background:linear-gradient(135deg,#1A2E1F,#1A1F2E)">
+        <svg viewBox="0 0 360 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+          <rect width="360" height="180" fill="transparent"/>
+          <polygon points="60,150 130,60 200,150" fill="rgba(107,143,113,0.15)" stroke="rgba(107,143,113,0.3)" stroke-width="1"/>
+          <polygon points="150,150 240,40 330,150" fill="rgba(107,143,113,0.1)" stroke="rgba(107,143,113,0.2)" stroke-width="1"/>
+          <path d="M 30 150 Q 100 120 160 100 Q 220 80 300 130 Q 330 145 360 140" fill="none" stroke="rgba(245,166,35,0.4)" stroke-width="2"/>
+        </svg>
+        <div class="post-cat-tag">Trails & Outdoors</div>
+      </div>
+      <div class="post-body">
+        <div class="post-title">10 Incredible Hikes You Can Access Directly From a Highway Exit</div>
+        <div class="post-excerpt">No long drives down dirt roads. These trailheads are within 5 minutes of the highway and worth every step.</div>
+        <div class="post-footer">
+          <span class="post-read-time">8 min read</span>
+          <span class="post-arrow">→</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Post 4 -->
+    <a class="post-card" href="/posts/scenic-overlooks-us.html">
+      <div class="post-visual" style="background:linear-gradient(135deg,#1A1F2E,#2E1A2A)">
+        <svg viewBox="0 0 360 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+          <rect width="360" height="180" fill="transparent"/>
+          <rect x="0" y="110" width="360" height="70" fill="rgba(107,143,113,0.08)"/>
+          <circle cx="180" cy="60" r="35" fill="rgba(245,166,35,0.08)" stroke="rgba(245,166,35,0.2)" stroke-width="1"/>
+          <path d="M 0 110 Q 90 80 180 95 Q 270 110 360 85 L 360 180 L 0 180 Z" fill="rgba(26,31,46,0.5)"/>
+          <circle cx="180" cy="58" r="18" fill="rgba(245,166,35,0.15)" stroke="rgba(245,166,35,0.3)" stroke-width="1"/>
+        </svg>
+        <div class="post-cat-tag">Scenic Stops</div>
+      </div>
+      <div class="post-body">
+        <div class="post-title">25 Scenic Overlooks Across the US That Stop You in Your Tracks</div>
+        <div class="post-excerpt">These pullouts and viewpoints are the reason road trips exist. Ranked by how long you'll linger.</div>
+        <div class="post-footer">
+          <span class="post-read-time">10 min read</span>
+          <span class="post-arrow">→</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Post 5 -->
+    <a class="post-card" href="/posts/best-road-trip-lodging.html">
+      <div class="post-visual" style="background:linear-gradient(135deg,#1F1A2E,#2E1F1A)">
+        <svg viewBox="0 0 360 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+          <rect width="360" height="180" fill="transparent"/>
+          <rect x="100" y="70" width="160" height="90" rx="4" fill="none" stroke="rgba(196,112,90,0.3)" stroke-width="1.5"/>
+          <rect x="120" y="50" width="120" height="30" rx="2" fill="none" stroke="rgba(196,112,90,0.2)" stroke-width="1"/>
+          <rect x="130" y="100" width="30" height="60" fill="rgba(196,112,90,0.15)"/>
+          <rect x="200" y="105" width="25" height="25" fill="rgba(245,166,35,0.15)"/>
+          <rect x="235" y="105" width="25" height="25" fill="rgba(245,166,35,0.1)"/>
+        </svg>
+        <div class="post-cat-tag">Lodging</div>
+      </div>
+      <div class="post-body">
+        <div class="post-title">The Best Lodging Along Major US Road Trip Routes (Under $180/Night)</div>
+        <div class="post-excerpt">Boutique motels, historic inns, and hidden cabin stays — all within range of the most-driven routes in America.</div>
+        <div class="post-footer">
+          <span class="post-read-time">7 min read</span>
+          <span class="post-arrow">→</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Post 6 - Coming Soon placeholder -->
+    <div class="post-card" style="opacity:0.45;pointer-events:none;cursor:default;">
+      <div class="post-visual" style="background:var(--mist);display:flex;align-items:center;justify-content:center;">
+        <span style="font-family:'Space Mono',monospace;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:#9CA3AF;">Coming Soon</span>
+      </div>
+      <div class="post-body">
+        <div class="post-title" style="color:#9CA3AF;">Best Spas Within 10 Miles of Major Highways</div>
+        <div class="post-excerpt" style="color:#C4C9D4;">Wellness stops for the road-weary traveler who deserves more than a gas station coffee.</div>
+        <div class="post-footer">
+          <span class="post-read-time">Publishing soon</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- NEWSLETTER -->
+<div class="newsletter" style="max-width:1100px;margin:0 auto 5rem;">
+  <div class="nl-text">
+    <h3>New guides, every week.</h3>
+    <p>Get the best new road trip stops delivered to your inbox. No spam, unsubscribe anytime.</p>
+  </div>
+  <form class="nl-form" name="blog-newsletter" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="handleNLSubmit(event)">
+    <input type="hidden" name="form-name" value="blog-newsletter"/>
+    <p style="display:none"><input name="bot-field"/></p>
+    <input class="nl-input" type="email" name="email" placeholder="your@email.com" required/>
+    <button class="nl-btn" type="submit">Subscribe</button>
+  </form>
+</div>
+
+<footer>
+  <a class="footer-logo" href="/index.html">Detour<span>d</span></a>
+  <ul class="footer-nav">
+    <li><a href="/index.html">Home</a></li>
+    <li><a href="/plan.html">Plan a Route</a></li>
+    <li><a href="/partners.html">Affiliates</a></li>
+    <li><a href="/index.html#early-access">Waitlist</a></li>
+  </ul>
+  <span class="footer-copy">© 2025 Detourd, Inc.</span>
+</footer>
+
+<script>
+  // category filter
+  document.querySelectorAll('.cat-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+  // newsletter form
+  function handleNLSubmit(e) {
+    e.preventDefault();
+    const form = e.target;
+    fetch('/', { method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: new URLSearchParams(new FormData(form)).toString() })
+    .then(() => { form.innerHTML = '<p style="font-family:\'Space Mono\',monospace;font-size:0.8rem;color:var(--amber);font-weight:700;">✓ You\'re subscribed!</p>'; });
+  }
+</script>
+</body>
+</html>

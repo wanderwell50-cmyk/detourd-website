@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Detourd - Discover the Roads Worth Taking</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:       #1A1F2E;
+      --amber:     #F5A623;
+      --sage:      #6B8F71;
+      --cream:     #F7F3ED;
+      --terra:     #C4705A;
+      --mist:      #D6DDE8;
+      --white:     #FFFFFF;
+      --ink-light: #2E3650;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      overflow-x: hidden;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 4rem;
+      background: rgba(26,31,46,0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(245,166,35,0.15);
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.65rem; font-weight: 900;
+      color: var(--white); letter-spacing: -0.5px;
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--amber); }
+    .nav-links {
+      display: flex; gap: 2.4rem; list-style: none;
+    }
+    .nav-links a {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--mist); text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--amber); }
+    .nav-cta {
+      background: var(--amber); color: var(--ink);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 0.65rem 1.4rem; border-radius: 2px;
+      text-decoration: none; transition: background 0.2s, transform 0.15s;
+    }
+    .nav-cta:hover { background: #ffc24a; transform: translateY(-1px); }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      background: var(--ink);
+      position: relative; overflow: hidden;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 8rem 2rem 4rem;
+    }
+
+    /* map grid texture */
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(107,143,113,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(107,143,113,0.06) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+
+    /* radial glow */
+    .hero::after {
+      content: '';
+      position: absolute;
+      width: 700px; height: 700px;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -60%);
+      background: radial-gradient(circle, rgba(245,166,35,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* ── animated route SVG ── */
+    .route-svg {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      pointer-events: none; z-index: 1;
+    }
+    .route-path {
+      fill: none;
+      stroke: var(--amber);
+      stroke-width: 2.5;
+      stroke-dasharray: 1800;
+      stroke-dashoffset: 1800;
+      opacity: 0.55;
+      animation: drawRoute 3.5s ease-out 0.4s forwards;
+    }
+    @keyframes drawRoute {
+      to { stroke-dashoffset: 0; }
+    }
+    .route-dot {
+      fill: var(--amber);
+      opacity: 0;
+      animation: popDot 0.4s ease-out forwards;
+    }
+    .route-dot:nth-child(2) { animation-delay: 0.9s; }
+    .route-dot:nth-child(3) { animation-delay: 1.5s; }
+    .route-dot:nth-child(4) { animation-delay: 2.1s; }
+    .route-dot:nth-child(5) { animation-delay: 2.7s; }
+    .route-dot:nth-child(6) { animation-delay: 3.2s; }
+    @keyframes popDot {
+      0%   { opacity: 0; r: 0; }
+      60%  { opacity: 1; r: 8px; }
+      100% { opacity: 1; r: 5px; }
+    }
+
+    .hero-content {
+      position: relative; z-index: 2;
+      text-align: center; max-width: 860px;
+    }
+    .hero-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--amber); margin-bottom: 1.4rem;
+      display: flex; align-items: center; justify-content: center; gap: 0.8rem;
+    }
+    .hero-eyebrow::before, .hero-eyebrow::after {
+      content: ''; width: 40px; height: 1px; background: var(--amber); opacity: 0.5;
+    }
+    .hero-headline {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 7vw, 5.4rem);
+      font-weight: 900; line-height: 1.06;
+      color: var(--white); margin-bottom: 1.6rem;
+    }
+    .hero-headline em {
+      font-style: italic; color: var(--amber);
+    }
+    .hero-sub {
+      font-size: 1.1rem; font-weight: 300; line-height: 1.75;
+      color: var(--mist); max-width: 580px; margin: 0 auto 2.6rem;
+    }
+    .hero-actions {
+      display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+    }
+    .btn-primary {
+      background: var(--amber); color: var(--ink);
+      font-family: 'Space Mono', monospace; font-size: 0.8rem;
+      font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 1rem 2.2rem; border-radius: 2px; text-decoration: none;
+      transition: background 0.2s, transform 0.15s; border: none; cursor: pointer;
+    }
+    .btn-primary:hover { background: #ffc24a; transform: translateY(-2px); }
+    .btn-ghost {
+      border: 1px solid rgba(255,255,255,0.25); color: var(--white);
+      font-family: 'Space Mono', monospace; font-size: 0.8rem;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 1rem 2.2rem; border-radius: 2px; text-decoration: none;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--amber); color: var(--amber); }
+
+    .hero-scroll-hint {
+      position: absolute; bottom: 2.2rem; left: 50%; transform: translateX(-50%);
+      z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+      opacity: 0.45;
+      animation: fadeUp 0.8s ease 3.8s both;
+    }
+    .scroll-line {
+      width: 1px; height: 40px;
+      background: linear-gradient(to bottom, var(--amber), transparent);
+      animation: scrollPulse 1.8s ease-in-out infinite;
+    }
+    @keyframes scrollPulse { 0%,100%{opacity:0.3} 50%{opacity:1} }
+    @keyframes fadeUp { from{opacity:0;transform:translate(-50%,10px)} to{opacity:0.45;transform:translate(-50%,0)} }
+
+    /* ─── PARTNERS STRIP ─── */
+    .partners {
+      background: var(--ink-light);
+      padding: 1.8rem 4rem;
+      display: flex; align-items: center; gap: 2rem;
+      overflow: hidden; flex-wrap: wrap;
+    }
+    .partners-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: rgba(255,255,255,0.35); white-space: nowrap;
+    }
+    .partners-logos {
+      display: flex; gap: 2.4rem; align-items: center; flex-wrap: wrap;
+    }
+    .partner-chip {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em;
+      color: rgba(255,255,255,0.4);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 0.35rem 0.85rem; border-radius: 20px;
+      transition: color 0.2s, border-color 0.2s;
+      cursor: pointer;
+    }
+    .partner-chip:hover { color: var(--amber); border-color: var(--amber); }
+
+    /* ─── SECTION SHARED ─── */
+    section { padding: 7rem 4rem; }
+    .section-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--sage); margin-bottom: 0.8rem;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700; line-height: 1.18;
+      color: var(--ink); margin-bottom: 1.2rem;
+    }
+    .section-body {
+      font-size: 1rem; line-height: 1.8; color: #4A5568;
+      max-width: 520px;
+    }
+
+    /* ─── HOW IT WORKS ─── */
+    .how { background: var(--white); }
+    .how-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center;
+    }
+    .steps { display: flex; flex-direction: column; gap: 2.4rem; margin-top: 2.8rem; }
+    .step {
+      display: flex; gap: 1.4rem; align-items: flex-start;
+    }
+    .step-icon {
+      width: 48px; height: 48px; border-radius: 10px;
+      background: var(--cream); border: 1px solid var(--mist);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; flex-shrink: 0;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .step:hover .step-icon { background: var(--amber); border-color: var(--amber); }
+    .step-text h4 {
+      font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 600;
+      color: var(--ink); margin-bottom: 0.3rem;
+    }
+    .step-text p { font-size: 0.88rem; line-height: 1.65; color: #6B7280; }
+
+    /* map mockup */
+    .map-mockup {
+      background: var(--ink);
+      border-radius: 16px; overflow: hidden;
+      aspect-ratio: 4/5; position: relative;
+      box-shadow: 0 40px 100px rgba(26,31,46,0.25);
+    }
+    .map-bg {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(107,143,113,0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(107,143,113,0.08) 1px, transparent 1px);
+      background-size: 35px 35px;
+    }
+    .map-pins {
+      position: absolute; inset: 0;
+    }
+    .pin {
+      position: absolute;
+      display: flex; flex-direction: column; align-items: center;
+      cursor: pointer;
+    }
+    .pin-bubble {
+      background: var(--amber); color: var(--ink);
+      font-size: 0.65rem; font-weight: 700; font-family: 'Space Mono', monospace;
+      padding: 0.3rem 0.55rem; border-radius: 4px;
+      white-space: nowrap; opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 0.2s, transform 0.2s;
+      pointer-events: none;
+    }
+    .pin:hover .pin-bubble { opacity: 1; transform: translateY(0); }
+    .pin-dot {
+      width: 14px; height: 14px; border-radius: 50%;
+      background: var(--amber);
+      border: 2px solid var(--white);
+      box-shadow: 0 0 0 4px rgba(245,166,35,0.25);
+      animation: pinPulse 2.5s ease-in-out infinite;
+    }
+    .pin:nth-child(2) .pin-dot { background: var(--terra); box-shadow: 0 0 0 4px rgba(196,112,90,0.25); animation-delay: 0.6s; }
+    .pin:nth-child(3) .pin-dot { background: var(--sage); box-shadow: 0 0 0 4px rgba(107,143,113,0.25); animation-delay: 1.2s; }
+    .pin:nth-child(4) .pin-dot { background: #7B9FE0; box-shadow: 0 0 0 4px rgba(123,159,224,0.25); animation-delay: 0.3s; }
+    .pin:nth-child(5) .pin-dot { background: #E0A87B; box-shadow: 0 0 0 4px rgba(224,168,123,0.25); animation-delay: 0.9s; }
+    @keyframes pinPulse {
+      0%,100%{box-shadow:0 0 0 4px rgba(245,166,35,0.2)}
+      50%{box-shadow:0 0 0 10px rgba(245,166,35,0)}
+    }
+    .map-route-line {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      pointer-events: none;
+    }
+    .map-route-path {
+      fill: none; stroke: rgba(245,166,35,0.4);
+      stroke-width: 2; stroke-dasharray: 8 5;
+    }
+    .map-legend {
+      position: absolute; bottom: 1.2rem; left: 1.2rem; right: 1.2rem;
+      background: rgba(26,31,46,0.85);
+      backdrop-filter: blur(8px);
+      border-radius: 10px; padding: 1rem 1.2rem;
+      display: flex; gap: 1.2rem; flex-wrap: wrap;
+    }
+    .legend-item {
+      display: flex; align-items: center; gap: 0.4rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem; letter-spacing: 0.05em;
+      color: rgba(255,255,255,0.7);
+    }
+    .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+    /* ─── FEATURES ─── */
+    .features { background: var(--cream); }
+    .features-inner { max-width: 1200px; margin: 0 auto; }
+    .features-header { margin-bottom: 4rem; }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5px;
+      background: var(--mist);
+      border: 1px solid var(--mist);
+      border-radius: 12px; overflow: hidden;
+    }
+    .feature-card {
+      background: var(--white);
+      padding: 2.4rem 2rem;
+      transition: background 0.25s;
+      position: relative;
+    }
+    .feature-card:hover { background: var(--ink); }
+    .feature-card:hover .fc-title,
+    .feature-card:hover .fc-body { color: var(--white); }
+    .feature-card:hover .fc-icon { background: rgba(245,166,35,0.15); }
+    .fc-icon {
+      width: 52px; height: 52px; border-radius: 12px;
+      background: var(--cream); margin-bottom: 1.4rem;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; transition: background 0.25s;
+    }
+    .fc-title {
+      font-family: 'Inter', sans-serif; font-weight: 600;
+      font-size: 1rem; color: var(--ink); margin-bottom: 0.55rem;
+      transition: color 0.25s;
+    }
+    .fc-body {
+      font-size: 0.85rem; line-height: 1.7; color: #6B7280;
+      transition: color 0.25s;
+    }
+
+    /* ─── PARTNERSHIP ─── */
+    .partnership { background: var(--ink); }
+    .partnership-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start;
+    }
+    .partnership .section-title { color: var(--white); }
+    .partnership .section-body { color: var(--mist); }
+    .partner-tiers {
+      display: flex; flex-direction: column; gap: 1.2rem; margin-top: 2rem;
+    }
+    .tier {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px; padding: 1.4rem 1.6rem;
+      display: flex; gap: 1.2rem; align-items: flex-start;
+      transition: border-color 0.2s, background 0.2s;
+      cursor: pointer;
+    }
+    .tier:hover {
+      border-color: var(--amber);
+      background: rgba(245,166,35,0.07);
+    }
+    .tier-badge {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; padding: 0.3rem 0.65rem;
+      border-radius: 3px; white-space: nowrap; flex-shrink: 0; margin-top: 1px;
+    }
+    .badge-gold { background: var(--amber); color: var(--ink); }
+    .badge-silver { background: var(--mist); color: var(--ink); }
+    .badge-bronze { background: var(--terra); color: var(--white); }
+    .tier-text h4 { color: var(--white); font-size: 0.95rem; font-weight: 600; margin-bottom: 0.3rem; }
+    .tier-text p { font-size: 0.83rem; line-height: 1.6; color: rgba(214,221,232,0.7); }
+
+    /* partner categories */
+    .partner-cats {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem;
+    }
+    .partner-cat {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px; padding: 1.4rem;
+      transition: border-color 0.2s;
+    }
+    .partner-cat:hover { border-color: rgba(245,166,35,0.4); }
+    .pc-icon { font-size: 1.6rem; margin-bottom: 0.6rem; }
+    .pc-title { color: var(--white); font-weight: 600; font-size: 0.9rem; margin-bottom: 0.3rem; }
+    .pc-examples { font-size: 0.78rem; color: rgba(214,221,232,0.5); font-family: 'Space Mono', monospace; }
+
+    /* ─── REVENUE ─── */
+    .revenue { background: var(--cream); }
+    .revenue-inner { max-width: 1100px; margin: 0 auto; }
+    .rev-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem; margin-top: 3.5rem;
+    }
+    .rev-card {
+      background: var(--white);
+      border: 1px solid var(--mist);
+      border-radius: 12px; padding: 2rem 1.6rem;
+      text-align: center; transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .rev-card:hover { transform: translateY(-4px); box-shadow: 0 20px 50px rgba(26,31,46,0.1); }
+    .rev-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .rev-title { font-weight: 600; font-size: 0.95rem; color: var(--ink); margin-bottom: 0.4rem; }
+    .rev-desc { font-size: 0.8rem; line-height: 1.65; color: #6B7280; }
+
+    /* ─── CTA ─── */
+    .cta-section {
+      background: var(--amber);
+      padding: 6rem 4rem;
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(26,31,46,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(26,31,46,0.06) 1px, transparent 1px);
+      background-size: 50px 50px;
+    }
+    .cta-inner { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; }
+    .cta-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 900; color: var(--ink); margin-bottom: 1rem; line-height: 1.15;
+    }
+    .cta-sub { font-size: 1rem; color: var(--ink-light); line-height: 1.7; margin-bottom: 2rem; }
+    .cta-form {
+      display: flex; gap: 0.6rem; max-width: 440px; margin: 0 auto;
+    }
+    .cta-input {
+      flex: 1; padding: 0.9rem 1.2rem;
+      border: 2px solid transparent; border-radius: 4px;
+      font-family: 'Inter', sans-serif; font-size: 0.9rem;
+      background: var(--white); color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .cta-input::placeholder { color: #9CA3AF; }
+    .cta-input:focus { border-color: var(--ink); }
+    .cta-submit {
+      background: var(--ink); color: var(--white);
+      font-family: 'Space Mono', monospace; font-size: 0.75rem;
+      font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 0.9rem 1.4rem; border-radius: 4px; border: none; cursor: pointer;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+    .cta-submit:hover { background: var(--ink-light); }
+    .cta-note { font-size: 0.75rem; color: rgba(26,31,46,0.55); margin-top: 1rem; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--ink);
+      padding: 4rem 4rem 2.5rem;
+    }
+    .footer-top {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem; padding-bottom: 3rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem; font-weight: 900;
+      color: var(--white); margin-bottom: 0.8rem; display: block;
+    }
+    .footer-logo span { color: var(--amber); }
+    .footer-tagline { font-size: 0.85rem; color: rgba(214,221,232,0.5); line-height: 1.7; }
+    .footer-col-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: rgba(255,255,255,0.35); margin-bottom: 1.2rem;
+    }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.65rem; }
+    .footer-links a {
+      font-size: 0.85rem; color: rgba(214,221,232,0.6); text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--amber); }
+    .footer-bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 2rem; flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-copy {
+      font-size: 0.78rem; color: rgba(255,255,255,0.25);
+    }
+    .footer-socials { display: flex; gap: 1rem; }
+    .social-icon {
+      width: 34px; height: 34px; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.1);
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(255,255,255,0.4); font-size: 0.8rem;
+      text-decoration: none; transition: border-color 0.2s, color 0.2s;
+    }
+    .social-icon:hover { border-color: var(--amber); color: var(--amber); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      section { padding: 4.5rem 1.5rem; }
+      .how-inner,
+      .partnership-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .feature-grid { grid-template-columns: 1fr 1fr; }
+      .rev-grid { grid-template-columns: 1fr 1fr; }
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 2rem; }
+      .partner-cats { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .feature-grid { grid-template-columns: 1fr; }
+      .rev-grid { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr; }
+      .cta-form { flex-direction: column; }
+      .partners { padding: 1.5rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .route-path { animation: none; stroke-dashoffset: 0; }
+      .route-dot { animation: none; opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── NAV ─── -->
+<nav>
+  <a class="nav-logo" href="#">Detour<span>d</span></a>
+  <ul class="nav-links">
+    <li><a href="/plan.html">Plan a Route</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="/blog.html">The Detour Log</a></li>
+    <li><a href="/partners.html">Affiliates</a></li>
+  </ul>
+  <a class="nav-cta" href="#early-access">Early Access</a>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <!-- animated route line -->
+  <svg class="route-svg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <path class="route-path" d="M 80 820 Q 200 700 320 620 Q 440 540 520 440 Q 600 340 720 300 Q 840 260 960 340 Q 1080 420 1200 380 Q 1320 340 1380 260"/>
+    <circle class="route-dot" cx="320" cy="620" r="5"/>
+    <circle class="route-dot" cx="520" cy="440" r="5"/>
+    <circle class="route-dot" cx="720" cy="300" r="5"/>
+    <circle class="route-dot" cx="960" cy="340" r="5"/>
+    <circle class="route-dot" cx="1200" cy="380" r="5"/>
+  </svg>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">Every journey has a better version</div>
+    <h1 class="hero-headline">The road you planned.<br>The trip you <em>actually want.</em></h1>
+    <p class="hero-sub">Detourd layers curated stops - national parks, iconic landmarks, hidden restaurants, scenic overlooks, great hikes, local spas, and top-rated lodging - right onto your existing route. Getting there is now half the adventure.</p>
+    <div class="hero-actions">
+      <a href="#early-access" class="btn-primary">Join the Waitlist</a>
+      <a href="#how" class="btn-ghost">See How It Works</a>
+    </div>
+  </div>
+
+  <div class="hero-scroll-hint">
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ─── AFFILIATES STRIP ─── -->
+<div class="partners">
+  <span class="partners-label">Book through</span>
+  <div class="partners-logos">
+    <span class="partner-chip">Hotels & Lodging</span>
+    <span class="partner-chip">Flights</span>
+    <span class="partner-chip">National Parks</span>
+    <span class="partner-chip">Trails & Outdoors</span>
+    <span class="partner-chip">Dining</span>
+    <span class="partner-chip">Sightseeing & Tours</span>
+    <span class="partner-chip">Wellness & Spas</span>
+    <span class="partner-chip">Camping</span>
+    <span class="partner-chip">Travel Insurance</span>
+  </div>
+</div>
+
+<!-- ─── HOW IT WORKS ─── -->
+<section class="how" id="how">
+  <div class="how-inner">
+    <div>
+      <p class="section-eyebrow">How It Works</p>
+      <h2 class="section-title">Enter your route.<br>Discover what's alongside it.</h2>
+      <p class="section-body">Detourd integrates with the mapping apps you already use and enriches every mile with national parks, sightseeing landmarks, restaurants, trails, lodging, and more - ranked, filtered, and personalized to your travel style.</p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-icon">🗺️</div>
+          <div class="step-text">
+            <h4>Enter your start and destination</h4>
+            <p>Connect with Google Maps, Apple Maps, or Waze. Your existing route becomes the canvas.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-icon">🎛️</div>
+          <div class="step-text">
+            <h4>Set your detour preferences</h4>
+            <p>Prioritize hikes, restaurants, scenic views, lodging, or spa stops - or let Detourd mix the best of all of them.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-icon">📍</div>
+          <div class="step-text">
+            <h4>Explore enriched stops along the way</h4>
+            <p>Curated pins appear on your route with ratings, photos, booking links, and estimated time added to your trip.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-icon">🔗</div>
+          <div class="step-text">
+            <h4>Book directly through trusted platforms</h4>
+            <p>One tap sends you to the booking platform of your choice - hotels, flights, trails, restaurants, and more - with a single seamless handoff.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- map mockup -->
+    <div class="map-mockup">
+      <div class="map-bg"></div>
+      <svg class="map-route-line" viewBox="0 0 360 450" xmlns="http://www.w3.org/2000/svg">
+        <path class="map-route-path" d="M 60 400 Q 100 320 150 270 Q 200 220 230 180 Q 260 140 300 100"/>
+      </svg>
+      <div class="map-pins">
+        <div class="pin" style="left:39%;top:63%">
+          <div class="pin-bubble">🍽️ Casa del Rio - 4.8★</div>
+          <div class="pin-dot"></div>
+        </div>
+        <div class="pin" style="left:56%;top:47%">
+          <div class="pin-bubble">🏨 The Ridge Inn - 4.6★</div>
+          <div class="pin-dot"></div>
+        </div>
+        <div class="pin" style="left:64%;top:34%">
+          <div class="pin-bubble">🥾 Summit Loop Trail - 5.2mi</div>
+          <div class="pin-dot"></div>
+        </div>
+        <div class="pin" style="left:72%;top:24%">
+          <div class="pin-bubble">🏛️ Grand Canyon South Rim</div>
+          <div class="pin-dot" style="background:#A78BFA;box-shadow:0 0 0 4px rgba(167,139,250,0.25)"></div>
+        </div>
+        <div class="pin" style="left:48%;top:18%">
+          <div class="pin-bubble">🌄 Painted Bluff Overlook</div>
+          <div class="pin-dot"></div>
+        </div>
+        <div class="pin" style="left:28%;top:80%">
+          <div class="pin-bubble">💆 Whispering Pines Spa - 4.9★</div>
+          <div class="pin-dot"></div>
+        </div>
+      </div>
+      <div class="map-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--amber)"></div> Restaurants</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--terra)"></div> Lodging</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--sage)"></div> Trails</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#A78BFA"></div> Parks & Landmarks</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#7B9FE0"></div> Scenic</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#E0A87B"></div> Wellness</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FEATURES ─── -->
+<section class="features" id="features">
+  <div class="features-inner">
+    <div class="features-header">
+      <p class="section-eyebrow">Platform Features</p>
+      <h2 class="section-title">Built for how people actually travel.</h2>
+    </div>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="fc-icon">🧭</div>
+        <div class="fc-title">Route Intelligence</div>
+        <div class="fc-body">Automatically surfaces stops within a customizable corridor around your route - from 5 to 50 miles wide - without breaking your travel time budget.</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon">⭐</div>
+        <div class="fc-title">Crowd-Sourced Ratings</div>
+        <div class="fc-body">Aggregates verified reviews from TripAdvisor, Yelp, Google, and AllTrails so you always know which stops are worth the detour and which aren't.</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon">🏛️</div>
+        <div class="fc-title">National Parks & Landmarks</div>
+        <div class="fc-body">Every National Park, state park, UNESCO site, and iconic landmark near your route surfaces automatically - with entry fees, hours, timed-entry permit links, and guided tour options via Viator and GetYourGuide.</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon">🏕️</div>
+        <div class="fc-title">Scenic & Outdoor Stops</div>
+        <div class="fc-body">Highlights trail access points, wildflower meadows, summit overlooks, and campgrounds - so the miles between parks are just as rewarding as the parks themselves.</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon">🍜</div>
+        <div class="fc-title">Local Haunt Finder</div>
+        <div class="fc-body">Skip the chains. Detourd surfaces independently owned restaurants, food trucks, and farm stands that locals actually love - not just what's sponsored.</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon">💆</div>
+        <div class="fc-title">Wellness Along the Way</div>
+        <div class="fc-body">Surfacing top-rated spas, hot springs, yoga studios, and wellness centers for travelers who want to recharge mid-journey, not just at the destination.</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon">📅</div>
+        <div class="fc-title">Real-Time Availability</div>
+        <div class="fc-body">Live booking data from Booking.com, OpenTable, and partner APIs means every stop you see can be reserved in one tap, with live pricing and open slots.</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon">🔔</div>
+        <div class="fc-title">Drive-Time Alerts</div>
+        <div class="fc-body">Approaching a highly-rated stop? Detourd pings you with a brief window to decide - so you never miss a legendary roadside pie shop again.</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon">✈️</div>
+        <div class="fc-title">Flight Search via Skyscanner</div>
+        <div class="fc-body">Flying to your starting point or home from your destination? Search and compare flights directly through Detourd - powered by Skyscanner's live pricing across hundreds of airlines.</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon">🗂️</div>
+        <div class="fc-title">Trip Collections</div>
+        <div class="fc-body">Save, share, and revisit full trip itineraries with friends. Build collections by theme - "California Wine Runs," "Rocky Mountain Loops" - and share them publicly.</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon">🏆</div>
+        <div class="fc-title">Ranked by Travelers, Not Dollars</div>
+        <div class="fc-body">Every stop is ranked purely by verified user ratings. No business can pay to appear higher in your results - ever. A family diner with 800 five-star reviews always beats a chain with an ad budget.</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon">🤝</div>
+        <div class="fc-title">Seamless Booking Handoffs</div>
+        <div class="fc-body">Every recommendation connects to a trusted booking platform via affiliate links - one tap to reserve, with no dead ends or extra steps between you and the stop.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PARTNERSHIP ─── -->
+<section class="partnership" id="partners">
+  <div class="partnership-inner">
+    <div>
+      <p class="section-eyebrow" style="color:var(--sage)">How Detourd Works</p>
+      <h2 class="section-title" style="color:var(--white)">Rankings you can actually trust.</h2>
+      <p class="section-body" style="color:var(--mist)">Every stop on Detourd is ranked by real user ratings - not by who paid to be there. No sponsored placements, no paid bumps, no hidden agendas. The best stop wins, every time.</p>
+
+      <!-- integrity pledge -->
+      <div style="background:rgba(107,143,113,0.12);border:1px solid rgba(107,143,113,0.3);border-radius:12px;padding:1.8rem;margin-top:2rem;">
+        <p style="font-family:'Space Mono',monospace;font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--sage);margin-bottom:1rem;">Our Integrity Pledge</p>
+        <div style="display:flex;flex-direction:column;gap:0.85rem;">
+          <div style="display:flex;align-items:flex-start;gap:0.8rem;">
+            <span style="color:var(--sage);font-size:1rem;flex-shrink:0;">✓</span>
+            <p style="font-size:0.88rem;color:var(--mist);line-height:1.65;">Recommendations are ranked by verified user ratings only - never by payment.</p>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:0.8rem;">
+            <span style="color:var(--sage);font-size:1rem;flex-shrink:0;">✓</span>
+            <p style="font-size:0.88rem;color:var(--mist);line-height:1.65;">We earn a small affiliate commission when you book - disclosed openly, at no extra cost to you.</p>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:0.8rem;">
+            <span style="color:var(--sage);font-size:1rem;flex-shrink:0;">✓</span>
+            <p style="font-size:0.88rem;color:var(--mist);line-height:1.65;">No business can pay to appear higher in your route results. Ever.</p>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:0.8rem;">
+            <span style="color:var(--sage);font-size:1rem;flex-shrink:0;">✓</span>
+            <p style="font-size:0.88rem;color:var(--mist);line-height:1.65;">A hidden gem with 500 five-star reviews always outranks a chain with a marketing budget.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <p class="section-eyebrow" style="color:var(--sage)">Booking Categories</p>
+      <div class="partner-cats">
+        <div class="partner-cat">
+          <div class="pc-icon">🏨</div>
+          <div class="pc-title">Lodging</div>
+          <div class="pc-examples">Hotels · Inns · Cabins · Motels</div>
+        </div>
+        <div class="partner-cat">
+          <div class="pc-icon">🏛️</div>
+          <div class="pc-title">National Parks & Sightseeing</div>
+          <div class="pc-examples">Parks · Landmarks · Guided Tours · Monuments</div>
+        </div>
+        <div class="partner-cat">
+          <div class="pc-icon">✈️</div>
+          <div class="pc-title">Flights</div>
+          <div class="pc-examples">Compare & book flights via Skyscanner</div>
+        </div>
+        <div class="partner-cat">
+          <div class="pc-icon">🥾</div>
+          <div class="pc-title">Outdoor & Trails</div>
+          <div class="pc-examples">Hiking · Camping · National Parks</div>
+        </div>
+        <div class="partner-cat">
+          <div class="pc-icon">🍽️</div>
+          <div class="pc-title">Food & Dining</div>
+          <div class="pc-examples">Restaurants · Local Haunts · Farm Stands</div>
+        </div>
+        <div class="partner-cat">
+          <div class="pc-icon">💆</div>
+          <div class="pc-title">Wellness & Spas</div>
+          <div class="pc-examples">Spas · Hot Springs · Yoga Studios</div>
+        </div>
+        <div class="partner-cat">
+          <div class="pc-icon">🎟️</div>
+          <div class="pc-title">Experiences</div>
+          <div class="pc-examples">Tours · Activities · Local Events</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── DISCLOSURE ─── -->
+<section style="background:var(--white); padding:2.2rem 4rem;">
+  <div style="max-width:1100px; margin:0 auto; display:flex; align-items:center; gap:1.2rem; flex-wrap:wrap;">
+    <span style="font-size:1.1rem;">🤝</span>
+    <p style="font-size:0.88rem; color:#6B7280; line-height:1.7; max-width:680px;">
+      <strong style="color:var(--ink);">Detourd is free to use.</strong> We earn a small commission when you book through our links, at no extra cost to you. This is how we keep the platform running and the recommendations honest.
+    </p>
+  </div>
+</section>
+
+<!-- ─── CTA ─── -->
+<section class="cta-section" id="early-access">
+  <div class="cta-inner">
+    <h2 class="cta-title">Be first on the road.</h2>
+    <p class="cta-sub">Join the Detourd early access list and help shape the platform that turns every drive into a story worth telling.</p>
+
+    <!-- Netlify form: data-netlify="true" tells Netlify to capture submissions -->
+    <form
+      class="cta-form"
+      name="waitlist"
+      method="POST"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+      onsubmit="handleSubmit(event)"
+    >
+      <!-- hidden fields required by Netlify -->
+      <input type="hidden" name="form-name" value="waitlist" />
+      <p style="display:none"><input name="bot-field" /></p>
+
+      <input
+        class="cta-input"
+        type="email"
+        name="email"
+        placeholder="your@email.com"
+        aria-label="Email address"
+        required
+      />
+      <button class="cta-submit" type="submit">Get Access</button>
+    </form>
+
+    <!-- success message, hidden until form is submitted -->
+    <div id="success-msg" style="display:none; margin-top:1.2rem;">
+      <p style="font-family:'Space Mono',monospace; font-size:0.85rem; color:var(--ink); font-weight:700;">
+        ✓ You're on the list - we'll be in touch soon.
+      </p>
+    </div>
+
+    <p class="cta-note">No spam. Early members get first access and help shape what we build. Unsubscribe anytime.</p>
+  </div>
+</section>
+
+<script>
+  function handleSubmit(e) {
+    e.preventDefault();
+    const form = e.target;
+    const data = new FormData(form);
+
+    fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(data).toString()
+    })
+    .then(() => {
+      form.style.display = 'none';
+      document.getElementById('success-msg').style.display = 'block';
+    })
+    .catch(() => {
+      alert('Something went wrong - please try again or email us directly.');
+    });
+  }
+</script>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <span class="footer-logo">Detour<span>d</span></span>
+      <p class="footer-tagline">Enriching every route with the stops<br>you didn't know you needed.</p>
+    </div>
+    <div>
+      <p class="footer-col-title">Product</p>
+      <ul class="footer-links">
+        <li><a href="/plan.html">Plan a Route</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="/blog.html">The Detour Log</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-col-title">Affiliates</p>
+      <ul class="footer-links">
+        <li><a href="/partners.html">Affiliate Inquiries</a></li>
+        <li><a href="/partners.html">Open Categories</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-col-title">Company</p>
+      <ul class="footer-links">
+        <li><a href="/about.html">About Detourd</a></li>
+        <li><a href="/index.html#early-access">Join Waitlist</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2025 Detourd, Inc. All rights reserved. · Privacy · Terms</span>
+    <div class="footer-socials">
+      <a class="social-icon" href="#" aria-label="Twitter">𝕏</a>
+      <a class="social-icon" href="#" aria-label="Instagram">ig</a>
+      <a class="social-icon" href="#" aria-label="LinkedIn">in</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

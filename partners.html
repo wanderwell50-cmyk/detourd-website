@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Affiliate & Partner Inquiries | Detourd</title>
+  <meta name="description" content="Interested in being featured on Detourd, or want us to feature your platform? Get in touch."/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --ink:#1A1F2E; --amber:#F5A623; --sage:#6B8F71; --cream:#F7F3ED; --terra:#C4705A; --mist:#D6DDE8; --white:#FFFFFF; --ink-light:#2E3650; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--cream); color: var(--ink); overflow-x: hidden; }
+
+    nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.1rem 4rem; background: rgba(26,31,46,0.96); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(245,166,35,0.15); }
+    .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.55rem; font-weight: 900; color: var(--white); text-decoration: none; }
+    .nav-logo span { color: var(--amber); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(214,221,232,0.7); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--amber); }
+    .nav-cta { background: var(--amber); color: var(--ink); font-family: 'Space Mono', monospace; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.6rem 1.3rem; border-radius: 2px; text-decoration: none; transition: background 0.2s; }
+    .nav-cta:hover { background: #ffc24a; }
+
+    /* HERO */
+    .p-hero { background: var(--ink); padding: 5rem 4rem 4rem; position: relative; overflow: hidden; }
+    .p-hero::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(107,143,113,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(107,143,113,0.05) 1px, transparent 1px); background-size: 55px 55px; }
+    .p-hero-inner { position: relative; z-index: 1; max-width: 740px; margin: 0 auto; text-align: center; }
+    .p-eyebrow { font-family: 'Space Mono', monospace; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--amber); margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; gap: 0.7rem; }
+    .p-eyebrow::before, .p-eyebrow::after { content: ''; width: 30px; height: 1px; background: var(--amber); opacity: 0.5; }
+    .p-hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4.5vw, 3.2rem); font-weight: 900; color: var(--white); line-height: 1.15; margin-bottom: 1.1rem; }
+    .p-hero h1 em { font-style: italic; color: var(--amber); }
+    .p-hero p { font-size: 1rem; color: rgba(214,221,232,0.65); line-height: 1.75; }
+
+    /* VALUE STATS */
+    .value-strip { background: var(--ink-light); padding: 2.2rem 4rem; display: flex; justify-content: center; gap: 4rem; flex-wrap: wrap; }
+    .value-stat { text-align: center; }
+    .value-num { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 900; color: var(--amber); }
+    .value-label { font-family: 'Space Mono', monospace; font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(214,221,232,0.5); margin-top: 0.3rem; }
+
+    /* MAIN CONTENT */
+    .p-main { max-width: 1100px; margin: 4.5rem auto; padding: 0 4rem; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
+
+    .why-section h2 { font-family: 'Playfair Display', serif; font-size: 1.7rem; font-weight: 700; color: var(--ink); margin-bottom: 1.2rem; line-height: 1.3; }
+    .why-list { display: flex; flex-direction: column; gap: 1.4rem; }
+    .why-item { display: flex; gap: 1rem; align-items: flex-start; }
+    .why-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--white); border: 1px solid var(--mist); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+    .why-text h4 { font-size: 0.92rem; font-weight: 600; color: var(--ink); margin-bottom: 0.25rem; }
+    .why-text p { font-size: 0.84rem; line-height: 1.6; color: #6B7280; }
+
+    .integrity-note { background: rgba(107,143,113,0.08); border-left: 3px solid var(--sage); border-radius: 0 8px 8px 0; padding: 1.2rem 1.4rem; margin-top: 1.8rem; font-size: 0.85rem; color: #4B5563; line-height: 1.7; }
+    .integrity-note strong { color: var(--ink); }
+
+    /* FORM */
+    .form-card { background: var(--white); border: 1px solid var(--mist); border-radius: 14px; padding: 2.4rem; box-shadow: 0 20px 60px rgba(26,31,46,0.08); }
+    .form-card h3 { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; color: var(--ink); margin-bottom: 0.4rem; }
+    .form-card .form-sub { font-size: 0.85rem; color: #6B7280; margin-bottom: 1.8rem; }
+
+    .field-group { margin-bottom: 1.2rem; display: flex; flex-direction: column; gap: 0.4rem; }
+    .field-group label { font-family: 'Space Mono', monospace; font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; color: #6B7280; }
+    .field-group input, .field-group select, .field-group textarea {
+      padding: 0.8rem 1rem; border: 1.5px solid var(--mist); border-radius: 8px;
+      font-family: 'Inter', sans-serif; font-size: 0.9rem; color: var(--ink); outline: none;
+      transition: border-color 0.2s; width: 100%; background: var(--white);
+    }
+    .field-group input:focus, .field-group select:focus, .field-group textarea:focus { border-color: var(--amber); }
+    .field-group textarea { resize: vertical; min-height: 90px; font-family: 'Inter', sans-serif; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    .submit-btn { width: 100%; background: var(--ink); color: var(--white); font-family: 'Space Mono', monospace; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.95rem; border-radius: 8px; border: none; cursor: pointer; transition: background 0.2s; margin-top: 0.4rem; }
+    .submit-btn:hover { background: var(--ink-light); }
+
+    .form-note { font-size: 0.75rem; color: #9CA3AF; text-align: center; margin-top: 1rem; }
+    .direct-email { text-align: center; margin-top: 1.4rem; padding-top: 1.4rem; border-top: 1px solid var(--mist); font-size: 0.85rem; color: #6B7280; }
+    .direct-email a { color: var(--amber); text-decoration: none; font-weight: 600; }
+
+    #success-state { display: none; text-align: center; padding: 2rem 0; }
+    #success-state .success-icon { font-size: 2.4rem; margin-bottom: 1rem; }
+    #success-state h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--ink); margin-bottom: 0.5rem; }
+    #success-state p { font-size: 0.88rem; color: #6B7280; }
+
+    /* CATEGORY GRID */
+    .cat-section { background: var(--white); padding: 4.5rem 4rem; }
+    .cat-section-inner { max-width: 1100px; margin: 0 auto; }
+    .cat-section-header { text-align: center; margin-bottom: 3rem; }
+    .cat-section-header p.eyebrow { font-family: 'Space Mono', monospace; font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--sage); margin-bottom: 0.7rem; }
+    .cat-section-header h2 { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; color: var(--ink); }
+    .cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+    .cat-tile { background: var(--cream); border-radius: 10px; padding: 1.6rem 1.2rem; text-align: center; transition: transform 0.2s; }
+    .cat-tile:hover { transform: translateY(-3px); }
+    .cat-tile-icon { font-size: 1.7rem; margin-bottom: 0.7rem; }
+    .cat-tile-title { font-size: 0.85rem; font-weight: 600; color: var(--ink); }
+
+    footer { background: var(--ink); padding: 2.5rem 4rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; border-top: 1px solid rgba(255,255,255,0.06); }
+    .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 900; color: var(--white); text-decoration: none; }
+    .footer-logo span { color: var(--amber); }
+    .footer-nav { display: flex; gap: 1.8rem; list-style: none; }
+    .footer-nav a { font-size: 0.8rem; color: rgba(255,255,255,0.4); text-decoration: none; transition: color 0.2s; }
+    .footer-nav a:hover { color: var(--amber); }
+    .footer-copy { font-size: 0.75rem; color: rgba(255,255,255,0.2); }
+
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .p-hero, .value-strip, .p-main, .cat-section { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .p-main { grid-template-columns: 1fr; gap: 3rem; }
+      .value-strip { gap: 2rem; }
+      .cat-grid { grid-template-columns: 1fr 1fr; }
+      .field-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="/index.html">Detour<span>d</span></a>
+  <ul class="nav-links">
+    <li><a href="/index.html">Home</a></li>
+    <li><a href="/plan.html">Plan a Route</a></li>
+    <li><a href="/blog.html">The Detour Log</a></li>
+    <li><a href="/partners.html" class="active">Affiliates</a></li>
+  </ul>
+  <a class="nav-cta" href="/index.html#early-access">Join Waitlist</a>
+</nav>
+
+<div class="p-hero">
+  <div class="p-hero-inner">
+    <div class="p-eyebrow">Affiliates & Partners</div>
+    <h1>Reach travelers at the exact moment they're <em>deciding where to stop.</em></h1>
+    <p>Detourd connects high-intent, mid-journey travelers to trusted booking platforms. If you run a travel brand, a booking platform, or a destination worth discovering, let's talk.</p>
+  </div>
+</div>
+
+<div class="value-strip">
+  <div class="value-stat"><div class="value-num">100%</div><div class="value-label">User-Ranked, Never Paid</div></div>
+  <div class="value-stat"><div class="value-num">8+</div><div class="value-label">Stop Categories</div></div>
+  <div class="value-stat"><div class="value-num">0</div><div class="value-label">Sponsored Placements</div></div>
+</div>
+
+<div class="p-main">
+
+  <div class="why-section">
+    <h2>Why work with Detourd</h2>
+    <div class="why-list">
+      <div class="why-item">
+        <div class="why-icon">🎯</div>
+        <div class="why-text">
+          <h4>High-intent traffic</h4>
+          <p>Every Detourd user is actively planning or mid-way through a trip - not casually browsing. That intent converts.</p>
+        </div>
+      </div>
+      <div class="why-item">
+        <div class="why-icon">🔗</div>
+        <div class="why-text">
+          <h4>Simple affiliate integration</h4>
+          <p>We link out via standard affiliate programs and deep links. No complex API work required on your end to get started.</p>
+        </div>
+      </div>
+      <div class="why-item">
+        <div class="why-icon">🧭</div>
+        <div class="why-text">
+          <h4>Niche, relevant audience</h4>
+          <p>Road trippers, outdoor travelers, and slow-travel enthusiasts - an audience that's hard to reach through generic travel ads.</p>
+        </div>
+      </div>
+      <div class="why-item">
+        <div class="why-icon">📈</div>
+        <div class="why-text">
+          <h4>Growing inventory of routes</h4>
+          <p>As our route library and blog content expand, so does the surface area connecting travelers to your platform.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="integrity-note">
+      <strong>How we rank things:</strong> Detourd ranks every stop by verified user ratings - never by payment. This means we cannot offer paid placement or sponsored ranking boosts. What we can offer is an honest, qualified referral. If your platform is good, it will rank well here on its own merits.
+    </div>
+  </div>
+
+  <div class="form-card">
+    <div id="form-default">
+      <h3>Get in touch</h3>
+      <p class="form-sub">Tell us about your platform or business. We respond to every inquiry.</p>
+
+      <form name="affiliate-inquiry" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="handleFormSubmit(event)">
+        <input type="hidden" name="form-name" value="affiliate-inquiry"/>
+        <p style="display:none"><input name="bot-field"/></p>
+
+        <div class="field-row">
+          <div class="field-group">
+            <label for="contact-name">Your name</label>
+            <input type="text" id="contact-name" name="name" required/>
+          </div>
+          <div class="field-group">
+            <label for="contact-email">Email</label>
+            <input type="email" id="contact-email" name="email" required/>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label for="company-name">Company / platform name</label>
+          <input type="text" id="company-name" name="company" required/>
+        </div>
+
+        <div class="field-group">
+          <label for="inquiry-type">What best describes you?</label>
+          <select id="inquiry-type" name="inquiry_type">
+            <option value="booking-platform">Booking platform (hotels, flights, tours)</option>
+            <option value="restaurant-venue">Restaurant or local venue</option>
+            <option value="outdoor-trail">Outdoor, trail, or park organization</option>
+            <option value="wellness-spa">Wellness or spa business</option>
+            <option value="tourism-board">Tourism board or destination marketer</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div class="field-group">
+          <label for="message">Tell us more</label>
+          <textarea id="message" name="message" placeholder="What are you hoping to do with Detourd?" required></textarea>
+        </div>
+
+        <button class="submit-btn" type="submit">Send Inquiry</button>
+      </form>
+
+      <p class="form-note">We typically respond within 3-5 business days.</p>
+      <div class="direct-email">Prefer email? Reach us directly at <a href="mailto:partners@detourd.com">partners@detourd.com</a></div>
+    </div>
+
+    <div id="success-state">
+      <div class="success-icon">✓</div>
+      <h3>Thanks for reaching out</h3>
+      <p>We've received your inquiry and will be in touch within 3-5 business days.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- CATEGORY GRID -->
+<div class="cat-section">
+  <div class="cat-section-inner">
+    <div class="cat-section-header">
+      <p class="eyebrow">Open Categories</p>
+      <h2>Where we're actively looking to connect</h2>
+    </div>
+    <div class="cat-grid">
+      <div class="cat-tile"><div class="cat-tile-icon">🏨</div><div class="cat-tile-title">Lodging</div></div>
+      <div class="cat-tile"><div class="cat-tile-icon">✈️</div><div class="cat-tile-title">Flights</div></div>
+      <div class="cat-tile"><div class="cat-tile-icon">🏛️</div><div class="cat-tile-title">Parks & Sightseeing</div></div>
+      <div class="cat-tile"><div class="cat-tile-icon">🥾</div><div class="cat-tile-title">Trails & Outdoors</div></div>
+      <div class="cat-tile"><div class="cat-tile-icon">🍽️</div><div class="cat-tile-title">Dining</div></div>
+      <div class="cat-tile"><div class="cat-tile-icon">💆</div><div class="cat-tile-title">Wellness & Spas</div></div>
+      <div class="cat-tile"><div class="cat-tile-icon">🎟️</div><div class="cat-tile-title">Experiences & Tours</div></div>
+      <div class="cat-tile"><div class="cat-tile-icon">🛡️</div><div class="cat-tile-title">Travel Insurance</div></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <a class="footer-logo" href="/index.html">Detour<span>d</span></a>
+  <ul class="footer-nav">
+    <li><a href="/index.html">Home</a></li>
+    <li><a href="/blog.html">Blog</a></li>
+    <li><a href="/plan.html">Plan a Route</a></li>
+    <li><a href="/index.html#early-access">Waitlist</a></li>
+  </ul>
+  <span class="footer-copy">© 2025 Detourd, Inc.</span>
+</footer>
+
+<script>
+  function handleFormSubmit(e) {
+    e.preventDefault();
+    const form = e.target;
+    const data = new FormData(form);
+    fetch('/', { method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: new URLSearchParams(data).toString() })
+      .then(() => {
+        document.getElementById('form-default').style.display = 'none';
+        document.getElementById('success-state').style.display = 'block';
+      })
+      .catch(() => alert('Something went wrong - please try again or email partners@detourd.com directly.'));
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Plan Your Route | Detourd</title>
+  <meta name="description" content="Enter your route and discover curated stops along the way - restaurants, trails, national parks, lodging, and scenic overlooks. A Detourd demo."/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --ink: #1A1F2E; --amber: #F5A623; --sage: #6B8F71;
+      --cream: #F7F3ED; --terra: #C4705A; --mist: #D6DDE8;
+      --white: #FFFFFF; --ink-light: #2E3650; --parks: #A78BFA;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--cream); color: var(--ink); overflow-x: hidden; }
+
+    /* NAV */
+    nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.1rem 4rem; background: rgba(26,31,46,0.96); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(245,166,35,0.15); }
+    .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.55rem; font-weight: 900; color: var(--white); text-decoration: none; }
+    .nav-logo span { color: var(--amber); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(214,221,232,0.7); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--amber); }
+    .nav-cta { background: var(--amber); color: var(--ink); font-family: 'Space Mono', monospace; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.6rem 1.3rem; border-radius: 2px; text-decoration: none; transition: background 0.2s; }
+    .nav-cta:hover { background: #ffc24a; }
+
+    /* PLANNER HERO */
+    .planner-hero { background: var(--ink); padding: 3.5rem 4rem 2.5rem; position: relative; overflow: hidden; }
+    .planner-hero::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(107,143,113,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(107,143,113,0.05) 1px, transparent 1px); background-size: 55px 55px; }
+    .planner-hero-inner { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; text-align: center; }
+    .planner-eyebrow { font-family: 'Space Mono', monospace; font-size: 0.66rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--amber); margin-bottom: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 0.7rem; }
+    .planner-eyebrow::before, .planner-eyebrow::after { content: ''; width: 30px; height: 1px; background: var(--amber); opacity: 0.5; }
+    .planner-hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.9rem, 4.5vw, 3rem); font-weight: 900; color: var(--white); line-height: 1.15; margin-bottom: 0.7rem; }
+    .planner-hero p { font-size: 0.95rem; color: rgba(214,221,232,0.6); max-width: 540px; margin: 0 auto; line-height: 1.7; }
+
+    .demo-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(245,166,35,0.1); border: 1px solid rgba(245,166,35,0.3); border-radius: 20px; padding: 0.4rem 1rem; margin-top: 1.4rem; font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--amber); }
+    .demo-badge::before { content: '●'; font-size: 0.6rem; animation: blink 2s ease-in-out infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    /* ROUTE FORM */
+    .route-form-wrap { max-width: 900px; margin: -1.8rem auto 0; padding: 0 4rem; position: relative; z-index: 2; }
+    .route-form { background: var(--white); border-radius: 14px; padding: 1.8rem; box-shadow: 0 30px 70px rgba(26,31,46,0.2); display: grid; grid-template-columns: 1fr 1fr auto; gap: 1rem; align-items: end; }
+    .form-field { display: flex; flex-direction: column; gap: 0.4rem; }
+    .form-field label { font-family: 'Space Mono', monospace; font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: #9CA3AF; }
+    .form-field input { padding: 0.85rem 1rem; border: 1.5px solid var(--mist); border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 0.92rem; color: var(--ink); outline: none; transition: border-color 0.2s; }
+    .form-field input:focus { border-color: var(--amber); }
+    .plan-btn { background: var(--ink); color: var(--white); font-family: 'Space Mono', monospace; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.85rem 1.8rem; border-radius: 8px; border: none; cursor: pointer; transition: background 0.2s; white-space: nowrap; }
+    .plan-btn:hover { background: var(--ink-light); }
+
+    /* PREFERENCE CHIPS */
+    .pref-bar { max-width: 900px; margin: 1.4rem auto 0; padding: 0 4rem; display: flex; gap: 0.6rem; flex-wrap: wrap; justify-content: center; }
+    .pref-chip { font-family: 'Space Mono', monospace; font-size: 0.68rem; letter-spacing: 0.05em; padding: 0.5rem 1rem; border-radius: 20px; border: 1.5px solid var(--mist); background: var(--white); color: #6B7280; cursor: pointer; transition: all 0.2s; user-select: none; }
+    .pref-chip.active { border-color: var(--amber); background: rgba(245,166,35,0.1); color: var(--ink); font-weight: 700; }
+    .pref-chip:hover { border-color: var(--amber); }
+
+    /* MAIN LAYOUT */
+    .planner-main { max-width: 1300px; margin: 3rem auto 5rem; padding: 0 4rem; display: grid; grid-template-columns: 380px 1fr; gap: 2rem; }
+
+    /* RESULTS SIDEBAR */
+    .results-panel { display: flex; flex-direction: column; gap: 0.9rem; max-height: 720px; overflow-y: auto; padding-right: 0.4rem; }
+    .results-header { font-family: 'Space Mono', monospace; font-size: 0.66rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--sage); margin-bottom: 0.4rem; display: flex; justify-content: space-between; align-items: center; }
+    .stop-result { background: var(--white); border: 1px solid var(--mist); border-radius: 10px; padding: 1.1rem 1.2rem; cursor: pointer; transition: border-color 0.2s, transform 0.15s; }
+    .stop-result:hover, .stop-result.highlighted { border-color: var(--amber); transform: translateX(2px); }
+    .stop-result-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem; }
+    .stop-result-name { font-family: 'Playfair Display', serif; font-size: 0.98rem; font-weight: 700; color: var(--ink); line-height: 1.3; }
+    .stop-result-rating { font-family: 'Space Mono', monospace; font-size: 0.7rem; font-weight: 700; color: var(--amber); white-space: nowrap; margin-left: 0.6rem; }
+    .stop-result-cat { font-family: 'Space Mono', monospace; font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.2rem 0.55rem; border-radius: 3px; display: inline-block; margin-bottom: 0.5rem; }
+    .stop-result-desc { font-size: 0.82rem; line-height: 1.6; color: #6B7280; margin-bottom: 0.6rem; }
+    .stop-result-meta { display: flex; justify-content: space-between; align-items: center; }
+    .stop-result-detour { font-family: 'Space Mono', monospace; font-size: 0.62rem; color: #9CA3AF; }
+    .stop-result-book { font-family: 'Space Mono', monospace; font-size: 0.62rem; font-weight: 700; color: var(--ink); text-decoration: none; letter-spacing: 0.05em; }
+    .stop-result-book:hover { color: var(--amber); }
+
+    /* MAP AREA */
+    .map-area { background: var(--ink); border-radius: 14px; position: relative; overflow: hidden; min-height: 720px; box-shadow: 0 20px 60px rgba(26,31,46,0.15); }
+    .map-bg-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(107,143,113,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(107,143,113,0.06) 1px, transparent 1px); background-size: 40px 40px; }
+    .map-route-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .map-route-line { fill: none; stroke: var(--amber); stroke-width: 2.5; stroke-dasharray: 1400; stroke-dashoffset: 1400; opacity: 0.6; transition: stroke-dashoffset 1.8s ease-out; }
+    .map-route-line.drawn { stroke-dashoffset: 0; }
+    .map-endpoint { fill: var(--white); stroke: var(--ink); stroke-width: 2; }
+    .map-pin-group { cursor: pointer; opacity: 0; transition: opacity 0.4s; }
+    .map-pin-group.visible { opacity: 1; }
+    .map-pin-group:hover .map-pin-tooltip { opacity: 1; }
+    .map-pin-dot { transition: r 0.2s; }
+    .map-pin-group:hover .map-pin-dot { r: 9; }
+    .map-pin-tooltip { opacity: 0; transition: opacity 0.2s; pointer-events: none; }
+
+    .map-empty-state { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2rem; z-index: 1; }
+    .map-empty-icon { font-size: 2.6rem; margin-bottom: 1.2rem; opacity: 0.5; }
+    .map-empty-state h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--white); margin-bottom: 0.5rem; }
+    .map-empty-state p { font-size: 0.85rem; color: rgba(214,221,232,0.5); max-width: 320px; }
+
+    .map-route-label { position: absolute; top: 1.4rem; left: 1.4rem; right: 1.4rem; display: flex; justify-content: space-between; align-items: flex-start; z-index: 2; pointer-events: none; }
+    .route-summary { background: rgba(26,31,46,0.85); backdrop-filter: blur(8px); border-radius: 10px; padding: 0.9rem 1.2rem; }
+    .route-summary-route { font-family: 'Inter', sans-serif; font-size: 0.85rem; font-weight: 600; color: var(--white); margin-bottom: 0.2rem; }
+    .route-summary-meta { font-family: 'Space Mono', monospace; font-size: 0.62rem; color: rgba(214,221,232,0.5); }
+
+    .map-legend-floating { position: absolute; bottom: 1.4rem; left: 1.4rem; background: rgba(26,31,46,0.85); backdrop-filter: blur(8px); border-radius: 10px; padding: 0.9rem 1.1rem; display: flex; gap: 1rem; flex-wrap: wrap; z-index: 2; }
+    .legend-item-fl { display: flex; align-items: center; gap: 0.4rem; font-family: 'Space Mono', monospace; font-size: 0.58rem; letter-spacing: 0.04em; color: rgba(255,255,255,0.7); }
+    .legend-dot-fl { width: 8px; height: 8px; border-radius: 50%; }
+
+    /* DISCLOSURE STRIP */
+    .planner-disclosure { max-width: 1300px; margin: 0 auto 4rem; padding: 0 4rem; }
+    .disclosure-box { background: var(--white); border: 1px solid var(--mist); border-radius: 10px; padding: 1.2rem 1.5rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+    .disclosure-box p { font-size: 0.82rem; color: #6B7280; line-height: 1.6; }
+    .disclosure-box strong { color: var(--ink); }
+
+    /* FOOTER */
+    footer { background: var(--ink); padding: 2.5rem 4rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; border-top: 1px solid rgba(255,255,255,0.06); }
+    .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 900; color: var(--white); text-decoration: none; }
+    .footer-logo span { color: var(--amber); }
+    .footer-nav { display: flex; gap: 1.8rem; list-style: none; }
+    .footer-nav a { font-size: 0.8rem; color: rgba(255,255,255,0.4); text-decoration: none; transition: color 0.2s; }
+    .footer-nav a:hover { color: var(--amber); }
+    .footer-copy { font-size: 0.75rem; color: rgba(255,255,255,0.2); }
+
+    @media (max-width: 1000px) {
+      .planner-main { grid-template-columns: 1fr; }
+      .results-panel { max-height: none; order: 2; }
+      .map-area { order: 1; min-height: 420px; }
+    }
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .planner-hero { padding: 2.5rem 1.5rem 2rem; }
+      .route-form-wrap, .pref-bar, .planner-main, .planner-disclosure { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .route-form { grid-template-columns: 1fr; }
+      footer { padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="/index.html">Detour<span>d</span></a>
+  <ul class="nav-links">
+    <li><a href="/index.html">Home</a></li>
+    <li><a href="/plan.html" class="active">Plan a Route</a></li>
+    <li><a href="/blog.html">The Detour Log</a></li>
+    <li><a href="/partners.html">Affiliates</a></li>
+  </ul>
+  <a class="nav-cta" href="/index.html#early-access">Join Waitlist</a>
+</nav>
+
+<div class="planner-hero">
+  <div class="planner-hero-inner">
+    <div class="planner-eyebrow">Route Planner</div>
+    <h1>Enter your route. See what's worth the detour.</h1>
+    <p>Try a live preview of how Detourd works. Enter a start and destination below to see sample curated stops appear along the way.</p>
+    <div class="demo-badge">Interactive Demo - Sample Data</div>
+  </div>
+</div>
+
+<div class="route-form-wrap">
+  <div class="route-form">
+    <div class="form-field">
+      <label for="start-input">Starting point</label>
+      <input type="text" id="start-input" placeholder="e.g. San Francisco, CA" value="San Francisco, CA"/>
+    </div>
+    <div class="form-field">
+      <label for="end-input">Destination</label>
+      <input type="text" id="end-input" placeholder="e.g. Los Angeles, CA" value="Los Angeles, CA"/>
+    </div>
+    <button class="plan-btn" id="plan-btn" type="button">Plan Route</button>
+  </div>
+</div>
+
+<div class="pref-bar" id="pref-bar">
+  <button class="pref-chip active" data-cat="all">All Stops</button>
+  <button class="pref-chip" data-cat="dining">🍽️ Dining</button>
+  <button class="pref-chip" data-cat="lodging">🏨 Lodging</button>
+  <button class="pref-chip" data-cat="trails">🥾 Trails</button>
+  <button class="pref-chip" data-cat="parks">🏛️ Parks & Landmarks</button>
+  <button class="pref-chip" data-cat="scenic">🌄 Scenic</button>
+  <button class="pref-chip" data-cat="wellness">💆 Wellness</button>
+</div>
+
+<div class="planner-main">
+
+  <!-- RESULTS SIDEBAR -->
+  <div class="results-panel" id="results-panel">
+    <div class="results-header"><span>Curated Stops</span><span id="results-count">0 found</span></div>
+    <!-- populated by JS -->
+  </div>
+
+  <!-- MAP -->
+  <div class="map-area" id="map-area">
+    <div class="map-bg-grid"></div>
+
+    <div class="map-empty-state" id="map-empty">
+      <div class="map-empty-icon">🗺️</div>
+      <h3>Your route will appear here</h3>
+      <p>Enter a starting point and destination above, then click "Plan Route" to see curated stops along the way.</p>
+    </div>
+
+    <svg class="map-route-svg" id="map-svg" viewBox="0 0 800 720" preserveAspectRatio="xMidYMid meet" style="display:none;">
+      <path class="map-route-line" id="route-path" d="M 100 640 Q 220 560 280 480 Q 340 400 380 320 Q 420 240 480 180 Q 540 120 650 70"/>
+      <circle class="map-endpoint" cx="100" cy="640" r="8"/>
+      <circle class="map-endpoint" cx="650" cy="70" r="8"/>
+      <!-- pins injected by JS -->
+      <g id="pins-layer"></g>
+    </svg>
+
+    <div class="map-route-label" id="route-label" style="display:none;">
+      <div class="route-summary">
+        <div class="route-summary-route" id="route-summary-text">San Francisco, CA → Los Angeles, CA</div>
+        <div class="route-summary-meta" id="route-summary-meta">~380 mi · 6h 15m drive time</div>
+      </div>
+    </div>
+
+    <div class="map-legend-floating" id="map-legend" style="display:none;">
+      <div class="legend-item-fl"><div class="legend-dot-fl" style="background:#F5A623"></div> Dining</div>
+      <div class="legend-item-fl"><div class="legend-dot-fl" style="background:#C4705A"></div> Lodging</div>
+      <div class="legend-item-fl"><div class="legend-dot-fl" style="background:#6B8F71"></div> Trails</div>
+      <div class="legend-item-fl"><div class="legend-dot-fl" style="background:#A78BFA"></div> Parks</div>
+      <div class="legend-item-fl"><div class="legend-dot-fl" style="background:#7B9FE0"></div> Scenic</div>
+      <div class="legend-item-fl"><div class="legend-dot-fl" style="background:#E0A87B"></div> Wellness</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="planner-disclosure">
+  <div class="disclosure-box">
+    <span style="font-size:1.1rem;">🤝</span>
+    <p><strong>This is a demo with sample data.</strong> The live Detourd platform will pull real, ranked stops from trusted sources. We earn a small affiliate commission when you book through our links, at no extra cost to you - and no stop can ever pay to rank higher.</p>
+  </div>
+</div>
+
+<footer>
+  <a class="footer-logo" href="/index.html">Detour<span>d</span></a>
+  <ul class="footer-nav">
+    <li><a href="/index.html">Home</a></li>
+    <li><a href="/blog.html">Blog</a></li>
+    <li><a href="/partners.html">Affiliates</a></li>
+    <li><a href="/index.html#early-access">Waitlist</a></li>
+  </ul>
+  <span class="footer-copy">© 2025 Detourd, Inc.</span>
+</footer>
+
+<script>
+  // ─── Sample stop database (keyed loosely to a generic CA coastal route for demo purposes) ───
+  const SAMPLE_STOPS = [
+    { name: "Casa del Rio", cat: "dining", icon: "🍽️", rating: "4.8★", desc: "Family-run Mexican spot known for fish tacos and a hidden back patio.", detour: "+3 min detour", pos: [0.30, 0.68] },
+    { name: "The Ridge Inn", cat: "lodging", icon: "🏨", rating: "4.6★", desc: "Boutique 12-room inn with ocean-facing balconies and a fire pit lounge.", detour: "On route", pos: [0.42, 0.55] },
+    { name: "Summit Loop Trail", cat: "trails", icon: "🥾", rating: "4.9★", desc: "5.2 mile loop with a waterfall and panoramic coastal views at the summit.", detour: "+12 min detour", pos: [0.50, 0.44] },
+    { name: "Painted Bluff Overlook", cat: "scenic", icon: "🌄", rating: "4.7★", desc: "Free roadside pullout with one of the best sunset views on the route.", detour: "On route", pos: [0.58, 0.34] },
+    { name: "Whispering Pines Spa", cat: "wellness", icon: "💆", rating: "4.9★", desc: "Hot springs and massage studio tucked just off the highway.", detour: "+8 min detour", pos: [0.22, 0.78] },
+    { name: "Redwood Grove State Park", cat: "parks", icon: "🏛️", rating: "4.8★", desc: "Old-growth redwood grove with an easy boardwalk loop, free entry.", detour: "+5 min detour", pos: [0.65, 0.25] },
+    { name: "Neptune's Catch", cat: "dining", icon: "🍽️", rating: "4.5★", desc: "Roadside seafood shack, cash only, picnic tables facing the water.", detour: "On route", pos: [0.74, 0.18] },
+    { name: "Cliffside Cabins", cat: "lodging", icon: "🏨", rating: "4.7★", desc: "Six standalone cabins on a bluff, each with a private fire pit.", detour: "+6 min detour", pos: [0.36, 0.60] },
+    { name: "Harmony Headlands Trail", cat: "trails", icon: "🥾", rating: "4.6★", desc: "Flat 5.4 mile out-and-back through coastal prairie to dramatic bluffs.", detour: "+15 min detour", pos: [0.46, 0.50] },
+    { name: "Vista Point Pullout", cat: "scenic", icon: "🌄", rating: "4.4★", desc: "Quick pullout with a view locals say beats the famous one two miles up.", detour: "On route", pos: [0.55, 0.40] },
+  ];
+
+  const CAT_COLORS = { dining: "#F5A623", lodging: "#C4705A", trails: "#6B8F71", parks: "#A78BFA", scenic: "#7B9FE0", wellness: "#E0A87B" };
+
+  let activeCategory = "all";
+  let routePlanned = false;
+
+  const planBtn = document.getElementById('plan-btn');
+  const mapEmpty = document.getElementById('map-empty');
+  const mapSvg = document.getElementById('map-svg');
+  const routeLabel = document.getElementById('route-label');
+  const mapLegend = document.getElementById('map-legend');
+  const pinsLayer = document.getElementById('pins-layer');
+  const resultsPanel = document.getElementById('results-panel');
+  const resultsCount = document.getElementById('results-count');
+  const routePath = document.getElementById('route-path');
+  const routeSummaryText = document.getElementById('route-summary-text');
+
+  function buildPins() {
+    pinsLayer.innerHTML = '';
+    SAMPLE_STOPS.forEach((stop, i) => {
+      const x = 80 + stop.pos[0] * 640;
+      const y = 680 - stop.pos[1] * 640;
+      const color = CAT_COLORS[stop.cat];
+      const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+      g.setAttribute("class", "map-pin-group");
+      g.setAttribute("data-cat", stop.cat);
+      g.setAttribute("data-idx", i);
+      g.innerHTML = `
+        <circle class="map-pin-dot" cx="${x}" cy="${y}" r="7" fill="${color}" stroke="#1A1F2E" stroke-width="2"/>
+        <g class="map-pin-tooltip">
+          <rect x="${x - 65}" y="${y - 38}" width="130" height="24" rx="4" fill="rgba(26,31,46,0.92)"/>
+          <text x="${x}" y="${y - 22}" fill="#F5A623" font-family="Space Mono, monospace" font-size="10" font-weight="700" text-anchor="middle">${stop.icon} ${stop.name}</text>
+        </g>
+      `;
+      g.addEventListener('click', () => highlightResult(i));
+      pinsLayer.appendChild(g);
+    });
+  }
+
+  function buildResults() {
+    resultsPanel.innerHTML = '<div class="results-header"><span>Curated Stops</span><span id="results-count">0 found</span></div>';
+    const filtered = SAMPLE_STOPS.filter(s => activeCategory === 'all' || s.cat === activeCategory);
+    document.getElementById('results-count').textContent = filtered.length + ' found';
+
+    filtered.forEach((stop) => {
+      const realIdx = SAMPLE_STOPS.indexOf(stop);
+      const color = CAT_COLORS[stop.cat];
+      const card = document.createElement('div');
+      card.className = 'stop-result';
+      card.dataset.idx = realIdx;
+      card.innerHTML = `
+        <div class="stop-result-top">
+          <div class="stop-result-name">${stop.icon} ${stop.name}</div>
+          <div class="stop-result-rating">${stop.rating}</div>
+        </div>
+        <span class="stop-result-cat" style="background:${color}22;color:${color}">${stop.cat}</span>
+        <div class="stop-result-desc">${stop.desc}</div>
+        <div class="stop-result-meta">
+          <span class="stop-result-detour">${stop.detour}</span>
+          <a class="stop-result-book" href="#" onclick="return false;">View & Book →</a>
+        </div>
+      `;
+      card.addEventListener('click', () => highlightResult(realIdx));
+      resultsPanel.appendChild(card);
+    });
+  }
+
+  function highlightResult(idx) {
+    document.querySelectorAll('.stop-result').forEach(el => el.classList.remove('highlighted'));
+    const card = document.querySelector(`.stop-result[data-idx="${idx}"]`);
+    if (card) {
+      card.classList.add('highlighted');
+      card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }
+
+  function filterPins() {
+    document.querySelectorAll('.map-pin-group').forEach(pin => {
+      const cat = pin.dataset.cat;
+      pin.classList.toggle('visible', routePlanned && (activeCategory === 'all' || cat === activeCategory));
+    });
+  }
+
+  function planRoute() {
+    const start = document.getElementById('start-input').value || 'San Francisco, CA';
+    const end = document.getElementById('end-input').value || 'Los Angeles, CA';
+    routeSummaryText.textContent = `${start} → ${end}`;
+
+    mapEmpty.style.display = 'none';
+    mapSvg.style.display = 'block';
+    routeLabel.style.display = 'flex';
+    mapLegend.style.display = 'flex';
+
+    buildPins();
+    buildResults();
+
+    setTimeout(() => {
+      routePath.classList.add('drawn');
+      filterPins();
+    }, 50);
+
+    routePlanned = true;
+  }
+
+  planBtn.addEventListener('click', planRoute);
+
+  document.querySelectorAll('.pref-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.pref-chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      activeCategory = chip.dataset.cat;
+      if (routePlanned) {
+        buildResults();
+        filterPins();
+      }
+    });
+  });
+
+  // Auto-plan on load for an immediate "wow" - comment out if you'd rather it stay empty
+  window.addEventListener('load', () => {
+    setTimeout(planRoute, 400);
+  });
+</script>
+
+</body>
+</html>

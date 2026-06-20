@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About Detourd</title>
+  <meta name="description" content="Detourd was built on a simple idea: the best part of a trip is often the stop you didn't plan for. Learn what we're building and why."/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --ink:#1A1F2E; --amber:#F5A623; --sage:#6B8F71; --cream:#F7F3ED; --terra:#C4705A; --mist:#D6DDE8; --white:#FFFFFF; --ink-light:#2E3650; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--cream); color: var(--ink); overflow-x: hidden; }
+
+    nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.1rem 4rem; background: rgba(26,31,46,0.96); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(245,166,35,0.15); }
+    .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.55rem; font-weight: 900; color: var(--white); text-decoration: none; }
+    .nav-logo span { color: var(--amber); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(214,221,232,0.7); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--amber); }
+    .nav-cta { background: var(--amber); color: var(--ink); font-family: 'Space Mono', monospace; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.6rem 1.3rem; border-radius: 2px; text-decoration: none; transition: background 0.2s; }
+    .nav-cta:hover { background: #ffc24a; }
+
+    /* HERO */
+    .about-hero { background: var(--ink); padding: 6rem 4rem 5rem; position: relative; overflow: hidden; }
+    .about-hero::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(107,143,113,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(107,143,113,0.05) 1px, transparent 1px); background-size: 55px 55px; }
+    .about-hero::after { content: ''; position: absolute; width: 600px; height: 600px; top: 30%; left: 50%; transform: translate(-50%,-50%); background: radial-gradient(circle, rgba(245,166,35,0.1) 0%, transparent 70%); pointer-events: none; }
+    .about-hero-inner { position: relative; z-index: 1; max-width: 700px; margin: 0 auto; text-align: center; }
+    .about-eyebrow { font-family: 'Space Mono', monospace; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--amber); margin-bottom: 1.2rem; display: flex; align-items: center; justify-content: center; gap: 0.7rem; }
+    .about-eyebrow::before, .about-eyebrow::after { content: ''; width: 30px; height: 1px; background: var(--amber); opacity: 0.5; }
+    .about-hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 5vw, 3.6rem); font-weight: 900; color: var(--white); line-height: 1.18; }
+    .about-hero h1 em { font-style: italic; color: var(--amber); }
+
+    /* STORY */
+    .story-section { max-width: 680px; margin: 0 auto; padding: 5rem 4rem; }
+    .story-section p { font-size: 1.08rem; line-height: 1.9; color: #374151; margin-bottom: 1.6rem; }
+    .story-section p.lede { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--ink); line-height: 1.5; margin-bottom: 2rem; }
+    .pull-quote { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.6rem; color: var(--ink); line-height: 1.4; border-left: 3px solid var(--amber); padding-left: 1.6rem; margin: 2.6rem 0; }
+
+    /* VALUES */
+    .values-section { background: var(--white); padding: 5rem 4rem; }
+    .values-inner { max-width: 1000px; margin: 0 auto; }
+    .values-header { text-align: center; margin-bottom: 3.5rem; }
+    .values-header p.eyebrow { font-family: 'Space Mono', monospace; font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--sage); margin-bottom: 0.7rem; }
+    .values-header h2 { font-family: 'Playfair Display', serif; font-size: 1.9rem; font-weight: 700; color: var(--ink); }
+    .values-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+    .value-card { text-align: center; padding: 1.5rem; }
+    .value-card-icon { font-size: 2rem; margin-bottom: 1.1rem; }
+    .value-card h4 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--ink); margin-bottom: 0.6rem; }
+    .value-card p { font-size: 0.88rem; line-height: 1.7; color: #6B7280; }
+
+    /* TIMELINE */
+    .timeline-section { max-width: 700px; margin: 0 auto; padding: 5rem 4rem; }
+    .timeline-header { text-align: center; margin-bottom: 3rem; }
+    .timeline-header p.eyebrow { font-family: 'Space Mono', monospace; font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--sage); margin-bottom: 0.7rem; }
+    .timeline-header h2 { font-family: 'Playfair Display', serif; font-size: 1.7rem; font-weight: 700; color: var(--ink); }
+    .timeline-item { display: flex; gap: 1.6rem; padding-bottom: 2.2rem; position: relative; }
+    .timeline-item:not(:last-child)::before { content:''; position: absolute; left: 23px; top: 50px; bottom: 0; width: 1px; background: var(--mist); }
+    .timeline-dot { width: 48px; height: 48px; border-radius: 50%; background: var(--ink); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.2rem; }
+    .timeline-dot.future { background: var(--cream); border: 1.5px dashed var(--mist); }
+    .timeline-text h4 { font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 600; color: var(--ink); margin-bottom: 0.3rem; }
+    .timeline-text p { font-size: 0.85rem; line-height: 1.65; color: #6B7280; }
+    .timeline-tag { font-family: 'Space Mono', monospace; font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--amber); display: block; margin-bottom: 0.3rem; }
+
+    /* CTA */
+    .about-cta { background: var(--amber); padding: 5rem 4rem; text-align: center; position: relative; overflow: hidden; }
+    .about-cta::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(26,31,46,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(26,31,46,0.06) 1px, transparent 1px); background-size: 50px 50px; }
+    .about-cta-inner { position: relative; z-index: 1; max-width: 560px; margin: 0 auto; }
+    .about-cta h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.7rem, 3.5vw, 2.4rem); font-weight: 900; color: var(--ink); margin-bottom: 1rem; }
+    .about-cta p { font-size: 0.95rem; color: var(--ink-light); margin-bottom: 1.8rem; line-height: 1.7; }
+    .about-cta-btn { display: inline-block; background: var(--ink); color: var(--white); font-family: 'Space Mono', monospace; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.9rem 2rem; border-radius: 4px; text-decoration: none; transition: background 0.2s; }
+    .about-cta-btn:hover { background: var(--ink-light); }
+
+    footer { background: var(--ink); padding: 2.5rem 4rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; border-top: 1px solid rgba(255,255,255,0.06); }
+    .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 900; color: var(--white); text-decoration: none; }
+    .footer-logo span { color: var(--amber); }
+    .footer-nav { display: flex; gap: 1.8rem; list-style: none; }
+    .footer-nav a { font-size: 0.8rem; color: rgba(255,255,255,0.4); text-decoration: none; transition: color 0.2s; }
+    .footer-nav a:hover { color: var(--amber); }
+    .footer-copy { font-size: 0.75rem; color: rgba(255,255,255,0.2); }
+
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .about-hero, .story-section, .values-section, .timeline-section, .about-cta { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .values-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="/index.html">Detour<span>d</span></a>
+  <ul class="nav-links">
+    <li><a href="/index.html">Home</a></li>
+    <li><a href="/plan.html">Plan a Route</a></li>
+    <li><a href="/blog.html">The Detour Log</a></li>
+    <li><a href="/about.html" class="active">About</a></li>
+  </ul>
+  <a class="nav-cta" href="/index.html#early-access">Join Waitlist</a>
+</nav>
+
+<div class="about-hero">
+  <div class="about-hero-inner">
+    <div class="about-eyebrow">About Detourd</div>
+    <h1>The best part of a trip is usually the stop you <em>didn't plan for.</em></h1>
+  </div>
+</div>
+
+<div class="story-section">
+  <p class="lede">Detourd started with a familiar frustration: driving past something incredible and only finding out about it after the trip was over.</p>
+  <p>Mapping apps are extraordinary at getting you from point A to point B. What they're not built for is everything in between - the diner locals actually eat at, the trailhead five minutes off the highway, the overlook that isn't on any list, the small inn that's better than the chain hotel at the same price.</p>
+  <p>That information exists. It's scattered across a dozen different platforms - reviews on one site, trail data on another, booking availability somewhere else entirely. Nobody has stitched it together around the one thing that actually matters when you're driving: your route.</p>
+  <p class="pull-quote">"We're not building another map. We're building the layer on top of the map you already use - the one that tells you what's actually worth stopping for."</p>
+  <p>Detourd pulls together restaurants, trails, national parks, lodging, scenic overlooks, and wellness stops - all ranked by real user ratings, all surfaced based on how far they are from your actual route. No guesswork, no fifteen open tabs, no missing the place that would have made the trip.</p>
+  <p>We're a small team building this because we wanted it to exist for our own trips. We hope it ends up doing the same for yours.</p>
+</div>
+
+<!-- VALUES -->
+<div class="values-section">
+  <div class="values-inner">
+    <div class="values-header">
+      <p class="eyebrow">What We Believe</p>
+      <h2>The principles behind the platform</h2>
+    </div>
+    <div class="values-grid">
+      <div class="value-card">
+        <div class="value-card-icon">🏆</div>
+        <h4>Rankings you can trust</h4>
+        <p>Every stop is ranked by verified user ratings - never by who paid the most. No business can buy a higher spot. Ever.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-card-icon">🧭</div>
+        <h4>The journey matters too</h4>
+        <p>A destination isn't the whole trip. We believe the miles in between deserve just as much thought and curation.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-card-icon">🤝</div>
+        <h4>Transparent, always</h4>
+        <p>We earn a small commission when you book through our links, at no cost to you. We'll never hide how we make money.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TIMELINE -->
+<div class="timeline-section">
+  <div class="timeline-header">
+    <p class="eyebrow">Our Path</p>
+    <h2>Where we are, and where we're headed</h2>
+  </div>
+
+  <div class="timeline-item">
+    <div class="timeline-dot">🌱</div>
+    <div class="timeline-text">
+      <span class="timeline-tag">Now</span>
+      <h4>Building the foundation</h4>
+      <p>Detourd is in early development. We're building our affiliate network, curating our first routes, and growing our early access community.</p>
+    </div>
+  </div>
+
+  <div class="timeline-item">
+    <div class="timeline-dot future">🚏</div>
+    <div class="timeline-text">
+      <span class="timeline-tag">Next</span>
+      <h4>Launching the route planner</h4>
+      <p>A working platform where you enter any route and get real, ranked stops along the way - integrated with the booking platforms you already trust.</p>
+    </div>
+  </div>
+
+  <div class="timeline-item">
+    <div class="timeline-dot future">🗺️</div>
+    <div class="timeline-text">
+      <span class="timeline-tag">Later</span>
+      <h4>Growing the map together</h4>
+      <p>Trip collections, shareable route guides, and a growing library of curated journeys built with our community and affiliate partners.</p>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="about-cta">
+  <div class="about-cta-inner">
+    <h2>Come along for the build.</h2>
+    <p>Join the waitlist to follow our progress and be first to try the platform when it's ready.</p>
+    <a class="about-cta-btn" href="/index.html#early-access">Join the Waitlist</a>
+  </div>
+</div>
+
+<footer>
+  <a class="footer-logo" href="/index.html">Detour<span>d</span></a>
+  <ul class="footer-nav">
+    <li><a href="/index.html">Home</a></li>
+    <li><a href="/blog.html">Blog</a></li>
+    <li><a href="/plan.html">Plan a Route</a></li>
+    <li><a href="/partners.html">Affiliates</a></li>
+  </ul>
+  <span class="footer-copy">© 2025 Detourd, Inc.</span>
+</footer>
+
+</body>
+</html>
