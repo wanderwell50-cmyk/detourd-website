@@ -9,9 +9,9 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --ink: #1A1F2E; --amber: #F5A623; --sage: #6B8F71;
-      --cream: #F7F3ED; --terra: #C4705A; --mist: #D6DDE8;
-      --white: #FFFFFF; --ink-light: #2E3650; --parks: #A78BFA;
+      --ink: #2B2A28; --amber: #C89B3C; --sage: #445939;
+      --cream: #E8E1D3; --terra: #8C4A38; --mist: #D6DDE8;
+      --white: #FFFFFF; --ink-light: #2E3650; --parks: #A78BFA; --plunge: #3C6E71;
     }
     html { scroll-behavior: smooth; }
     body { font-family: 'Inter', sans-serif; background: var(--cream); color: var(--ink); overflow-x: hidden; }
@@ -211,9 +211,9 @@
     </div>
 
     <div class="map-legend-floating" id="map-legend" style="display:none;">
-      <div class="legend-item-fl"><div class="legend-dot-fl" style="background:#F5A623"></div> Dining</div>
-      <div class="legend-item-fl"><div class="legend-dot-fl" style="background:#C4705A"></div> Lodging</div>
-      <div class="legend-item-fl"><div class="legend-dot-fl" style="background:#6B8F71"></div> Trails</div>
+      <div class="legend-item-fl"><div class="legend-dot-fl" style="background:#C89B3C"></div> Dining</div>
+      <div class="legend-item-fl"><div class="legend-dot-fl" style="background:#8C4A38"></div> Lodging</div>
+      <div class="legend-item-fl"><div class="legend-dot-fl" style="background:#445939"></div> Trails</div>
       <div class="legend-item-fl"><div class="legend-dot-fl" style="background:#A78BFA"></div> Parks</div>
       <div class="legend-item-fl"><div class="legend-dot-fl" style="background:#7B9FE0"></div> Scenic</div>
       <div class="legend-item-fl"><div class="legend-dot-fl" style="background:#E0A87B"></div> Wellness</div>
@@ -255,7 +255,7 @@
     { name: "Vista Point Pullout", cat: "scenic", icon: "🌄", rating: "4.4★", desc: "Quick pullout with a view locals say beats the famous one two miles up.", detour: "On route", pos: [0.55, 0.40] },
   ];
 
-  const CAT_COLORS = { dining: "#F5A623", lodging: "#C4705A", trails: "#6B8F71", parks: "#A78BFA", scenic: "#7B9FE0", wellness: "#E0A87B" };
+  const CAT_COLORS = { dining: "#C89B3C", lodging: "#8C4A38", trails: "#445939", parks: "#A78BFA", scenic: "#7B9FE0", wellness: "#E0A87B" };
 
   let activeCategory = "all";
   let routePlanned = false;
@@ -282,10 +282,10 @@
       g.setAttribute("data-cat", stop.cat);
       g.setAttribute("data-idx", i);
       g.innerHTML = `
-        <circle class="map-pin-dot" cx="${x}" cy="${y}" r="7" fill="${color}" stroke="#1A1F2E" stroke-width="2"/>
+        <circle class="map-pin-dot" cx="${x}" cy="${y}" r="7" fill="${color}" stroke="#2B2A28" stroke-width="2"/>
         <g class="map-pin-tooltip">
           <rect x="${x - 65}" y="${y - 38}" width="130" height="24" rx="4" fill="rgba(26,31,46,0.92)"/>
-          <text x="${x}" y="${y - 22}" fill="#F5A623" font-family="Space Mono, monospace" font-size="10" font-weight="700" text-anchor="middle">${stop.icon} ${stop.name}</text>
+          <text x="${x}" y="${y - 22}" fill="#C89B3C" font-family="Space Mono, monospace" font-size="10" font-weight="700" text-anchor="middle">${stop.icon} ${stop.name}</text>
         </g>
       `;
       g.addEventListener('click', () => highlightResult(i));

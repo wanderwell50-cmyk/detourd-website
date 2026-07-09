@@ -9,9 +9,9 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --ink: #1A1F2E; --amber: #F5A623; --sage: #6B8F71;
-      --cream: #F7F3ED; --terra: #C4705A; --mist: #D6DDE8;
-      --white: #FFFFFF; --ink-light: #2E3650;
+      --ink: #2B2A28; --amber: #C89B3C; --sage: #445939;
+      --cream: #E8E1D3; --terra: #8C4A38; --mist: #D6DDE8;
+      --white: #FFFFFF; --ink-light: #2E3650; --plunge: #3C6E71;
     }
     html { scroll-behavior: smooth; }
     body { font-family: 'Inter', sans-serif; background: var(--cream); color: var(--ink); overflow-x: hidden; }
@@ -66,7 +66,7 @@
     }
     .featured-card:hover { transform: translateY(-3px); }
     .featured-visual {
-      background: linear-gradient(135deg, #2E3650 0%, #1A1F2E 50%, #3D2B1F 100%);
+      background: linear-gradient(135deg, #2E3650 0%, #2B2A28 50%, #3D2B1F 100%);
       min-height: 340px; position: relative; display: flex; align-items: flex-end; padding: 2rem;
     }
     .featured-visual::before {
@@ -180,12 +180,12 @@
   <a class="featured-card" href="/posts/pacific-coast-highway.html">
     <div class="featured-visual">
       <svg viewBox="0 0 500 340" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%">
-        <rect width="500" height="340" fill="#1A1F2E"/>
+        <rect width="500" height="340" fill="#2B2A28"/>
         <line x1="0" y1="0" x2="500" y2="340" stroke="rgba(107,143,113,0.07)" stroke-width="1"/>
         <path d="M 50 300 Q 120 240 180 190 Q 240 140 300 130 Q 360 120 420 80 Q 460 55 490 30" fill="none" stroke="rgba(245,166,35,0.4)" stroke-width="2.5" stroke-dasharray="8 5"/>
-        <circle cx="180" cy="190" r="6" fill="#F5A623" opacity="0.9"/>
-        <circle cx="300" cy="130" r="6" fill="#C4705A" opacity="0.9"/>
-        <circle cx="420" cy="80" r="6" fill="#6B8F71" opacity="0.9"/>
+        <circle cx="180" cy="190" r="6" fill="#C89B3C" opacity="0.9"/>
+        <circle cx="300" cy="130" r="6" fill="#8C4A38" opacity="0.9"/>
+        <circle cx="420" cy="80" r="6" fill="#445939" opacity="0.9"/>
         <text x="250" y="280" fill="rgba(214,221,232,0.08)" font-family="serif" font-size="72" font-weight="900" text-anchor="middle">PCH</text>
       </svg>
       <div class="featured-badge">Route Guide</div>
@@ -211,13 +211,13 @@
 
     <!-- Post 1 -->
     <a class="post-card" href="/posts/route-66-hidden-stops.html">
-      <div class="post-visual" style="background:linear-gradient(135deg,#2E1F1A,#1A1F2E)">
+      <div class="post-visual" style="background:linear-gradient(135deg,#2E1F1A,#2B2A28)">
         <svg viewBox="0 0 360 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
           <rect width="360" height="180" fill="transparent"/>
           <path d="M 20 140 Q 90 100 180 90 Q 270 80 340 50" fill="none" stroke="rgba(245,166,35,0.35)" stroke-width="2" stroke-dasharray="7 4"/>
-          <circle cx="90" cy="105" r="5" fill="#F5A623" opacity="0.8"/>
-          <circle cx="180" cy="90" r="5" fill="#C4705A" opacity="0.8"/>
-          <circle cx="270" cy="70" r="5" fill="#6B8F71" opacity="0.8"/>
+          <circle cx="90" cy="105" r="5" fill="#C89B3C" opacity="0.8"/>
+          <circle cx="180" cy="90" r="5" fill="#8C4A38" opacity="0.8"/>
+          <circle cx="270" cy="70" r="5" fill="#445939" opacity="0.8"/>
           <text x="180" y="160" fill="rgba(245,166,35,0.07)" font-family="serif" font-size="52" font-weight="900" text-anchor="middle">66</text>
         </svg>
         <div class="post-cat-tag">Route Guide</div>
@@ -234,7 +234,7 @@
 
     <!-- Post 2 -->
     <a class="post-card" href="/posts/best-roadside-restaurants.html">
-      <div class="post-visual" style="background:linear-gradient(135deg,#1F2E1A,#1A1F2E)">
+      <div class="post-visual" style="background:linear-gradient(135deg,#1F2E1A,#2B2A28)">
         <svg viewBox="0 0 360 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
           <rect width="360" height="180" fill="transparent"/>
           <circle cx="80" cy="90" r="30" fill="none" stroke="rgba(245,166,35,0.15)" stroke-width="1"/>
@@ -258,7 +258,7 @@
 
     <!-- Post 3 -->
     <a class="post-card" href="/posts/hikes-near-highways.html">
-      <div class="post-visual" style="background:linear-gradient(135deg,#1A2E1F,#1A1F2E)">
+      <div class="post-visual" style="background:linear-gradient(135deg,#1A2E1F,#2B2A28)">
         <svg viewBox="0 0 360 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
           <rect width="360" height="180" fill="transparent"/>
           <polygon points="60,150 130,60 200,150" fill="rgba(107,143,113,0.15)" stroke="rgba(107,143,113,0.3)" stroke-width="1"/>
@@ -279,7 +279,7 @@
 
     <!-- Post 4 -->
     <a class="post-card" href="/posts/scenic-overlooks-us.html">
-      <div class="post-visual" style="background:linear-gradient(135deg,#1A1F2E,#2E1A2A)">
+      <div class="post-visual" style="background:linear-gradient(135deg,#2B2A28,#2E1A2A)">
         <svg viewBox="0 0 360 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
           <rect width="360" height="180" fill="transparent"/>
           <rect x="0" y="110" width="360" height="70" fill="rgba(107,143,113,0.08)"/>
